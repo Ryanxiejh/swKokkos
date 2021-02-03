@@ -19,6 +19,13 @@ KOKKOS_CFG_DEPENDS(DEVICES NONE)
 KOKKOS_DEPRECATED_LIST(DEVICES ENABLE)
 
 
+#Ryanxiejh 3/2/2021
+KOKKOS_DEVICE_OPTION(SWTHREAD       OFF HOST "Whether to build SwThread(Athread) backend")
+IF (KOKKOS_ENABLE_SWTHREAD)
+  #patch the naming here
+  #SET(KOKKOS_ENABLE_ATHREAD ON)
+ENDIF()
+
 KOKKOS_DEVICE_OPTION(PTHREAD       OFF HOST "Whether to build Pthread backend")
 IF (KOKKOS_ENABLE_PTHREAD)
   #patch the naming here
