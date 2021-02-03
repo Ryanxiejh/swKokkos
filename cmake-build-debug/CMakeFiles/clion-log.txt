@@ -1,0 +1,39 @@
+"E:\CLion 2020.1.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" E:\实验室\大数据项目\太湖环境\swKokkos\kokkos-master
+-- Setting default Kokkos CXX standard to 11
+-- The CXX compiler identification is GNU 8.1.0
+-- Check for working CXX compiler: E:/mingw64/bin/g++.exe
+-- Check for working CXX compiler: E:/mingw64/bin/g++.exe -- broken
+CMake Error at E:/CLion 2020.1.3/bin/cmake/win/share/cmake-3.16/Modules/CMakeTestCXXCompiler.cmake:53 (message):
+  The C++ compiler
+
+    "E:/mingw64/bin/g++.exe"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: E:/瀹為獙瀹�/澶ф暟鎹」鐩�/澶箹鐜/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeTmp
+    
+    Run Build Command(s):E:/mingw64/bin/mingw32-make.exe cmTC_6ae7b/fast && E:/mingw64/bin/mingw32-make.exe -f CMakeFiles\cmTC_6ae7b.dir\build.make CMakeFiles/cmTC_6ae7b.dir/build
+    mingw32-make.exe[1]: Entering directory 'E:/瀹為獙瀹�/澶ф暟鎹」鐩�/澶箹鐜/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeTmp'
+    Building CXX object CMakeFiles/cmTC_6ae7b.dir/testCXXCompiler.cxx.obj
+    E:\mingw64\bin\g++.exe     -o CMakeFiles\cmTC_6ae7b.dir\testCXXCompiler.cxx.obj -c E:\鐎圭偤鐛欑�诡槀婢堆勬殶閹诡噣銆嶉惄鐢涙径顏呯閻滎垰顣╘swKokkos\kokkos-master\cmake-build-debug\CMakeFiles\CMakeTmp\testCXXCompiler.cxx
+    g++.exe: error: E:\鐎圭偤鐛欑�诡槀婢堆勬殶閹诡噣銆嶉惄鐢涙径顏呯閻滎垰顣╘swKokkos\kokkos-master\cmake-build-debug\CMakeFiles\CMakeTmp\testCXXCompiler.cxx: No such file or directory
+    g++.exe: fatal error: no input files
+    compilation terminated.
+    mingw32-make.exe[1]: *** [CMakeFiles\cmTC_6ae7b.dir\build.make:65: CMakeFiles/cmTC_6ae7b.dir/testCXXCompiler.cxx.obj] Error 1
+    mingw32-make.exe[1]: Leaving directory 'E:/瀹為獙瀹�/澶ф暟鎹」鐩�/澶箹鐜/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeTmp'
+    mingw32-make.exe: *** [Makefile:120: cmTC_6ae7b/fast] Error 2
+    
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:85 (PROJECT)
+
+
+-- Configuring incomplete, errors occurred!
+See also "E:/瀹為獙瀹�/澶ф暟鎹」鐩�/澶箹鐜/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "E:/瀹為獙瀹�/澶ф暟鎹」鐩�/澶箹鐜/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeError.log".
