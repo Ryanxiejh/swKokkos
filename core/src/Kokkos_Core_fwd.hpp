@@ -105,6 +105,11 @@ class HPX;  ///< Execution space with HPX back-end.
 }
 #endif
 
+//Ryanxiejh 2021/2/4
+#if defined(KOKKOS_ENABLE_THREADS)
+    class SwThread;  ///< Execution space with SwThread back-end.
+#endif
+
 #if defined(KOKKOS_ENABLE_THREADS)
 class Threads;  ///< Execution space with pthreads back-end.
 #endif

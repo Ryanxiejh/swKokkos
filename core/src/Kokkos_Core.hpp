@@ -50,6 +50,11 @@
 
 #include <Kokkos_Core_fwd.hpp>
 
+//Ryanxiejh 2021/2/4
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+#include <SwThread/Kokkos_SwThread.hpp>
+#endif
+
 #if defined(KOKKOS_ENABLE_SERIAL)
 #include <Kokkos_Serial.hpp>
 #endif
