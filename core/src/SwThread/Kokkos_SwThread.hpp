@@ -32,7 +32,7 @@ namespace Kokkos{
 class SwThread {
  public:
     //! \name Type declarations that all Kokkos devices must provide.
-    //@{
+    // @{
 
     //! Tag this class as an execution space:
     using execution_space = SwThread;
@@ -56,6 +56,15 @@ class SwThread {
    inline static int in_parallel(){
        //return threads num
        return num_threads;
+   }
+
+   static void sw_initialize(){
+       sw_create_threads();
+   }
+
+   static void sw_finalize(){
+       sw_wait_threads();
+       sw_end_threads();
    }
 
 };
