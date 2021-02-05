@@ -21,6 +21,14 @@ void SwThread::impl_finalize(){
     sw_end_threads();
 }
 
+void SwThread::in_parallel(){
+    return num_threads;
+};
+
+void SwThread::concurrency(){
+    return num_threads;
+};
+
 }
 
 
