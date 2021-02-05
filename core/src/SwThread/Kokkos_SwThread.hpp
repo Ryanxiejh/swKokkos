@@ -15,6 +15,7 @@
 #include <iosfwd>
 #include <Kokkos_HostSpace.hpp>
 #include <Kokkos_ScratchSpace.hpp>
+#include <Kokkos_Parallel.hpp>
 #include <Kokkos_Layout.hpp>
 #include <Kokkos_MemoryTraits.hpp>
 #include <impl/Kokkos_Profiling_Interface.hpp>
@@ -77,6 +78,13 @@ class SwThread {
 
 }
 
+/*--------------------------------------------------------------------------*/
+
+#include <Kokkos_ExecPolicy.hpp>
+#include <Kokkos_Parallel.hpp>
+#include <SwThread/Kokkos_SwThread_Parallel.hpp>
+
+#include <KokkosExp_MDRangePolicy.hpp>
 
 #endif //#if defined(KOKKOS_ENABLE_SWTHREAD)
 #endif //KOKKOS_KOKKOS_SWTHREAD_HPP
