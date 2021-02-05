@@ -253,6 +253,11 @@ void initialize_backends(const InitArguments& args) {
   }
 #endif
 
+//Ryanxiejh 2021/2/5
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+    Kokkos::SwThread::impl_initialize(num_threads);
+#endif
+
 #if defined(KOKKOS_ENABLE_THREADS)
   if (std::is_same<Kokkos::Threads, Kokkos::DefaultExecutionSpace>::value ||
       std::is_same<Kokkos::Threads,

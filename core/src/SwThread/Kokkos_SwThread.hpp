@@ -25,7 +25,7 @@ extern "C"{
 }
 #include <SwThread/Kokkos_SwThread_HostBase.hpp>
 
-
+/*--------------------------------------------------------------------------*/
 
 namespace Kokkos{
 
@@ -58,14 +58,9 @@ class SwThread {
        return num_threads;
    }
 
-   static void sw_initialize(){
-       sw_create_threads();
-   }
+   static void impl_initialize(int thread_count = -1);
 
-   static void sw_finalize(){
-       sw_wait_threads();
-       sw_end_threads();
-   }
+   static void impl_finalize();
 
 };
 

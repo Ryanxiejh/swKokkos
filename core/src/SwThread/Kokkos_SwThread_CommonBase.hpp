@@ -11,7 +11,13 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+typedef enum sw_Thread_state{
+	sw_Thread_Active=0,
+	sw_Thread_Inactive,
+	sw_Thread_Teminating
+}sw_ThreadState;
 extern volatile int threadStates[64];
+extern volatile int threadReduceStates[64];
 extern long addr[65];
 extern volatile int curViewIndex; //记录view的index
 extern void* data_ptr[64];
@@ -84,11 +90,6 @@ extern volatile int redecer_length;
 //scan
 extern volatile long h_update[65];
 extern volatile long temp_update[65];
-
-typedef enum sw_Thread_state{
-    sw_Thread_Active=0,
-    sw_Thread_Inactive
-}sw_ThreadState;
 
 //MDR host
 extern volatile int data[640000][64];

@@ -6,9 +6,9 @@
 #define KOKKOS_KOKKOS_SWTHREAD_HOSTBASE_HPP
 #if defined(KOKKOS_ENABLE_SWTHREAD)
 
-void sw_create_threads();
+void sw_athread_init();
 
-void sw_wait_threads();
+void sw_create_threads();
 
 void sw_end_threads();
 
