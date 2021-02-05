@@ -53,14 +53,24 @@ class SwThread {
 
    /// \brief True if and only if this method is being called in a
    ///   thread-parallel function.
-   static int in_parallel();
+   inline static int in_parallel(){
+    return num_threads;
+   }
 
    /** \brief  Return the maximum amount of concurrency.  */
-   static int concurrency();
+   inline static int concurrency(){
+    return num_threads;
+   }
 
-   static void impl_initialize(int thread_count = -1);
+   inline static void impl_initialize(int thread_count = -1){
+    if(thread_count <= 0) thread_count = 1;
+    num_threads =  thread_count;
+    sw_athread_init();
+   }
 
-   static void impl_finalize();
+   inline static void impl_finalize(){
+    sw_end_threads();
+   }
 
 };
 
