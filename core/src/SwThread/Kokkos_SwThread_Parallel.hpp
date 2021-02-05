@@ -7,6 +7,7 @@
 
 #if defined(KOKKOS_ENABLE_SWTHREAD)
 #include <Kokkos_Macros.hpp>
+#include <Kokkos_Parallel.hpp>
 #include <KokkosExp_MDRangePolicy.hpp>
 
 //----------------------------------------------------------------------------
