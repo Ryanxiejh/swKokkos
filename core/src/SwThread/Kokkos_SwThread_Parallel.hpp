@@ -235,7 +235,6 @@ class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
     //set leagea and team size for athread
     sw_host_league_size = m_policy.league_size();
     sw_host_team_size = m_policy.team_size();
-
     //set execute pattern and policy
     exec_patten = sw_Parallel_For;
     target_policy = sw_TeamPolicy;
@@ -251,6 +250,7 @@ class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
       : m_functor(arg_functor),
         m_policy(arg_policy) {}
 };
+
 
 }
 }
