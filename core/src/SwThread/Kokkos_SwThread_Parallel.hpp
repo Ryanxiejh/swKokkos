@@ -81,7 +81,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
   inline void execute() const {
     //set MDR host datas for athread
     sw_host_rank = (this->m_mdr_policy).rank;
-    sw_host_tiles = m_num_tiles;
+    sw_host_tiles = (this->m_mdr_policy).m_num_tiles;
     for(int i = 0; i < sw_host_rank ; ++i) {
         sw_host_tile_nums[i] = ((this->m_mdr_policy).m_tile_end)[i];
         sw_host_tile[i] = ((this->m_mdr_policy).m_tile)[i];
