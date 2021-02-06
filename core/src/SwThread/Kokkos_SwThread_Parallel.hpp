@@ -292,8 +292,12 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     //set reduce information for athread
 
-    //初始化一个reducer对象，从而获取reducer的信息
-    ReducerTypeFwd reducerTypeFwd;
+    //如果使用默认reducer，即用户在构造函数中传进来reducer的类型时标量或者view，此时ReducerType是InvalidType，而这个情况下使默认使用
+    //built-in reducer中的sum，所以在此进行特殊处理
+    if(std::is_same<ReducerType,InvalidType>::value){
+        is_buildin_reducer = 1;
+        sw_reducer_type = sw_Reduce_SUM;
+    }
 
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
     //sw_reducer_type也会设置为相应值，这里只需获取其数据类型
