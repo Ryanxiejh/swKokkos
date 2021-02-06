@@ -10,6 +10,7 @@
 #include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_Core.hpp>
 #include <Kokkos_Parallel.hpp>
+#include <impl/Kokkos_FunctorAdapter.hpp>
 #include <KokkosExp_MDRangePolicy.hpp>
 
 //----------------------------------------------------------------------------
@@ -55,6 +56,55 @@ class ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>,
       : m_functor(arg_functor), m_policy(arg_policy) {}
 };
 
+/* ParallelFor Kokkos::SwThread with MDRangePolicy */
+template <class FunctorType, class... Traits>
+class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
+                  Kokkos::SwThread> {
+ private:
+  using MDRangePolicy = Kokkos::MDRangePolicy<Traits...>;
+  using Policy        = typename MDRangePolicy::impl_range_policy;
+
+  using WorkTag = typename MDRangePolicy::work_tag;
+
+  using WorkRange = typename Policy::WorkRange;
+  using Member    = typename Policy::member_type;
+
+  using iterate_type = typename Kokkos::Impl::HostIterateTile<
+      MDRangePolicy, FunctorType, typename MDRangePolicy::work_tag, void>;
+
+  const FunctorType m_functor;
+  const MDRangePolicy m_mdr_policy;
+  const Policy m_policy;  // construct as RangePolicy( 0, num_tiles
+                          // ).set_chunk_size(1) in ctor
+
+ public:
+  inline void execute() const {
+    //set MDR host datas for athread
+    sw_host_rank = (this->m_mdr_policy).rank;
+    sw_host_tiles = m_num_tiles;
+    for(int i = 0; i < sw_host_rank ; ++i) {
+        sw_host_tile_nums[i] = ((this->m_mdr_policy).m_tile_end)[i];
+        sw_host_tile[i] = ((this->m_mdr_policy).m_tile)[i];
+        sw_host_lower[i] = ((this->m_mdr_policy).m_lower)[i];
+        sw_host_upper = ((this->m_mdr_policy).m_upper)[i];
+    }
+
+    //set execute pattern and policy
+    exec_patten = sw_Parallel_For;
+    target_policy = sw_MDR_Policy;
+
+    //execution start
+    sw_create_threads();
+
+    //move the user function ptr to the next
+    user_func_index+=1;
+  }
+
+  ParallelFor(const FunctorType &arg_functor, const MDRangePolicy &arg_policy)
+      : m_functor(arg_functor),
+        m_mdr_policy(arg_policy),
+        m_policy(Policy(0, m_mdr_policy.m_num_tiles).set_chunk_size(1)) {}
+};
 
 }
 }

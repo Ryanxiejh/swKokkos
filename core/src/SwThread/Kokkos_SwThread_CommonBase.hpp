@@ -93,13 +93,13 @@ extern volatile long temp_update[65];
 
 //MDR host
 extern volatile int data[640000][64];
-extern int tile_nums[8];
-extern int tile[8];
-extern int lower[8];
-extern int upper[8];
-extern int rank;
-extern int cnt;
-extern int tiles;
+extern int sw_host_tile_nums[8]; //每个维度tile的数量
+extern int sw_host_tile[8]; //每个维度tile的大小
+extern int sw_host_lower[8]; //每个维度tile的下界
+extern int sw_host_upper[8]; //每个维度tile的上界
+extern int sw_host_rank; //使用的维度数
+extern int sw_host_cnt;
+extern int sw_host_tiles; //总的tile数量
 
 #endif //#if defined(KOKKOS_ENABLE_SWTHREAD)
 #endif //KOKKOS_KOKKOS_SWTHREAD_COMMONBASE_HPP
