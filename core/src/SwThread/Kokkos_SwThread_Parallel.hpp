@@ -110,6 +110,8 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
 
 //----------------------------------------------------------------------------
 /* ParallelFor Kokkos::Threads with TeamPolicy */
+class SwThreadTeamMember{};
+
 template <class... Properties>
 class TeamPolicyInternal<Kokkos::SwThread, Properties...>
     : public PolicyTraits<Properties...> {
@@ -121,6 +123,8 @@ class TeamPolicyInternal<Kokkos::SwThread, Properties...>
   //! Tag this class as a kokkos execution policy
   //! Tag this class as a kokkos execution policy
   using execution_policy = TeamPolicyInternal;
+
+  using member_type = Impl::SwThreadTeamMember;
 
   using traits = PolicyTraits<Properties...>;
 
