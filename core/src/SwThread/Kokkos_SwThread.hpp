@@ -67,7 +67,7 @@ class SwThread {
 
    inline static void impl_initialize(int thread_count = -1){
     if(thread_count <= 0) thread_count = 1;
-    num_threads =  thread_count;
+    num_threads = thread_count;
     printf("SwThread init...\n");
     printf("SwThread threads: %d\n",num_threads);
     sw_athread_init();

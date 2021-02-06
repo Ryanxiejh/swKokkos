@@ -228,7 +228,8 @@ void initialize_backends(const InitArguments& args) {
 
   // Protect declarations, to prevent "unused variable" warnings.
 #if defined(KOKKOS_ENABLE_OPENMP) || defined(KOKKOS_ENABLE_THREADS) || \
-    defined(KOKKOS_ENABLE_OPENMPTARGET) || defined(KOKKOS_ENABLE_HPX)
+    defined(KOKKOS_ENABLE_OPENMPTARGET) || defined(KOKKOS_ENABLE_HPX)  \
+    defined(KOKKOS_ENABLE_SWTHREAD) //Ryanxiejh 2021/2/6
   const int num_threads = args.num_threads;
 #endif
 #if defined(KOKKOS_ENABLE_THREADS) || defined(KOKKOS_ENABLE_OPENMPTARGET)
