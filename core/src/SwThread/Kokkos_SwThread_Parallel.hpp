@@ -292,11 +292,14 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     //set reduce information for athread
 
+    printf("//-----------------------------------------------\n");
+
     //如果使用默认reducer，即用户在构造函数中传进来reducer的类型时标量或者view，此时ReducerType是InvalidType，而这个情况下使默认使用
     //built-in reducer中的sum，所以在此进行特殊处理
     if(std::is_same<ReducerType,InvalidType>::value){
         is_buildin_reducer = 1;
         sw_reducer_type = sw_Reduce_SUM;
+        printf("SwThread use default reducer!\n");
     }
 
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
@@ -311,12 +314,17 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
         else if(std::is_same<typename ReducerTypeFwd::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
         else if(std::is_same<typename ReducerTypeFwd::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
         else if(std::is_same<typename ReducerTypeFwd::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
+        printf("SwThread use built-in reducer!\n");
     }
     //如果是custom reducer，则不作处理
+    else printf("SwThread use custom reducer!\n");
 
     //获取reducer的数据长度
     sw_redecer_length = ValueTraits::value_count(
                             ReducerConditional::select(m_functor, m_reducer));
+
+    printf("SwThread reducer length: %d\n",sw_redecer_length);
+    printf("//-----------------------------------------------\n");
 
     //设置reducer的数据指针
     sw_reducer_ptr = m_result_ptr;
