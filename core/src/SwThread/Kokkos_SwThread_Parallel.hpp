@@ -86,7 +86,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
         sw_host_tile_nums[i] = ((this->m_mdr_policy).m_tile_end)[i];
         sw_host_tile[i] = ((this->m_mdr_policy).m_tile)[i];
         sw_host_lower[i] = ((this->m_mdr_policy).m_lower)[i];
-        sw_host_upper = ((this->m_mdr_policy).m_upper)[i];
+        sw_host_upper[i] = ((this->m_mdr_policy).m_upper)[i];
     }
 
     //set execute pattern and policy
