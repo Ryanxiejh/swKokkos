@@ -60,8 +60,8 @@ extern volatile sw_ExecutionPattern exec_patten;
 extern volatile sw_ExecutionPolicy target_policy;
 extern volatile int user_func_index;
 
-extern volatile int team_size;
-extern volatile int league_size;
+extern volatile int sw_host_team_size;
+extern volatile int sw_host_league_size;
 
 
 typedef enum sw_Reduce_ValueType{

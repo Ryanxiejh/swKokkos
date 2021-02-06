@@ -11,6 +11,7 @@
 #include <Kokkos_Core.hpp>
 #include <Kokkos_Parallel.hpp>
 #include <impl/Kokkos_FunctorAdapter.hpp>
+#include <impl/Kokkos_HostThreadTeam.hpp>
 #include <KokkosExp_MDRangePolicy.hpp>
 
 //----------------------------------------------------------------------------
@@ -56,6 +57,7 @@ class ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>,
       : m_functor(arg_functor), m_policy(arg_policy) {}
 };
 
+//----------------------------------------------------------------------------
 /* ParallelFor Kokkos::SwThread with MDRangePolicy */
 template <class FunctorType, class... Traits>
 class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
@@ -104,6 +106,128 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
       : m_functor(arg_functor),
         m_mdr_policy(arg_policy),
         m_policy(Policy(0, m_mdr_policy.m_num_tiles).set_chunk_size(1)) {}
+};
+
+//----------------------------------------------------------------------------
+/* ParallelFor Kokkos::Threads with TeamPolicy */
+template <class... Properties>
+class TeamPolicyInternal<Kokkos::SwThread, Properties...>
+    : public PolicyTraits<Properties...> {
+ private:
+  int m_league_size;
+  int m_team_size;
+
+ public:
+  //! Tag this class as a kokkos execution policy
+  //! Tag this class as a kokkos execution policy
+  using execution_policy = TeamPolicyInternal;
+
+  using traits = PolicyTraits<Properties...>;
+
+  const typename traits::execution_space& space() const {
+    static typename traits::execution_space m_space;
+    return m_space;
+  }
+
+  template <class ExecSpace, class... OtherProperties>
+  friend class TeamPolicyInternal;
+
+  template <class... OtherProperties>
+  TeamPolicyInternal(
+      const TeamPolicyInternal<Kokkos::Threads, OtherProperties...>& p) {
+    m_league_size            = p.m_league_size;
+    m_team_size              = p.m_team_size;
+  }
+
+  //----------------------------------------
+
+  inline int team_size() const { return m_team_size; }
+  inline int league_size() const { return m_league_size; }
+
+  /** \brief  Specify league size, request team size */
+  TeamPolicyInternal(const typename traits::execution_space&,
+                     int league_size_request, int team_size_request,
+                     int vector_length_request = 1)
+      : m_league_size(0),
+        m_team_size(0) {
+      //set leagea and team size
+      const int max_team_size = num_threads;
+      m_league_size = league_size_request;
+      m_team_size = team_size_request > max_team_size ? max_team_size : team_size_request;
+  }
+
+  /** \brief  Specify league size, request team size */
+  TeamPolicyInternal(const typename traits::execution_space&,
+                     int league_size_request,
+                     const Kokkos::AUTO_t& /* team_size_request */
+                     ,
+                     int /* vector_length_request */ = 1)
+      : m_league_size(0),
+        m_team_size(0) {
+      //set leagea and team size
+      const int max_team_size = num_threads;
+      m_league_size = league_size_request;
+      m_team_size = team_size_request > max_team_size ? max_team_size : team_size_request;
+  }
+
+  TeamPolicyInternal(int league_size_request, int team_size_request,
+                     int /* vector_length_request */ = 1)
+      : m_league_size(0),
+        m_team_size(0) {
+      //set leagea and team size
+      const int max_team_size = num_threads;
+      m_league_size = league_size_request;
+      m_team_size = team_size_request > max_team_size ? max_team_size : team_size_request;
+  }
+
+  TeamPolicyInternal(int league_size_request,
+                     const Kokkos::AUTO_t& /* team_size_request */
+                     ,
+                     int /* vector_length_request */ = 1)
+      : m_league_size(0),
+        m_team_size(0) {
+      //set leagea and team size
+      const int max_team_size = num_threads;
+      m_league_size = league_size_request;
+      m_team_size = team_size_request > max_team_size ? max_team_size : team_size_request;
+  }
+
+};
+
+
+template <class FunctorType, class... Properties>
+class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
+                  Kokkos::SwThread> {
+ private:
+  using Policy =
+      Kokkos::Impl::TeamPolicyInternal<Kokkos::Threads, Properties...>;
+  using WorkTag = typename Policy::work_tag;
+  using Member  = typename Policy::member_type;
+
+  const FunctorType m_functor;
+  const Policy m_policy;
+  //const int m_shared;
+
+ public:
+  inline void execute() const {
+    //set leagea and team size for athread
+    sw_host_league_size = m_policy.league_size();
+    sw_host_team_size = m_policy.team_size();
+
+    //set execute pattern and policy
+    exec_patten = sw_Parallel_For;
+    target_policy = sw_TeamPolicy;
+
+    //execution start
+    sw_create_threads();
+
+    //move the user function ptr to the next
+    user_func_index+=1;
+  }
+
+  ParallelFor(const FunctorType &arg_functor, const Policy &arg_policy)
+      : m_functor(arg_functor),
+        m_policy(arg_policy) {}
 };
 
 }
