@@ -9,10 +9,11 @@
 #if defined(KOKKOS_ENABLE_SWTHREAD)
 
 #include <Kokkos_Core_fwd.hpp>
-#include <Kokkos_Core.hpp>
+//#include <Kokkos_Core.hpp>
 
 #include <cstddef>
 #include <iosfwd>
+#include <cstdio>
 #include <Kokkos_HostSpace.hpp>
 #include <Kokkos_ScratchSpace.hpp>
 #include <Kokkos_Parallel.hpp>
@@ -67,6 +68,8 @@ class SwThread {
    inline static void impl_initialize(int thread_count = -1){
     if(thread_count <= 0) thread_count = 1;
     num_threads =  thread_count;
+    printf("SwThread init...\n");
+    printf("SwThread threads: %d\n",num_threads);
     sw_athread_init();
    }
 
