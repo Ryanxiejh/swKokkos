@@ -77,6 +77,7 @@ class SwThread {
     sw_end_threads();
    }
 
+   void fence() const {}
 };
 
 

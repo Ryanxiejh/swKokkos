@@ -295,15 +295,15 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
     //sw_reducer_type也会设置为相应值，这里只需获取其数据类型
     if(is_buildin_reducer == 1){
-        if(std::is_same<typename ReducerType::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
-        else if(std::is_same<typename ReducerType::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
-        else if(std::is_same<typename ReducerType::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
-        else if(std::is_same<typename ReducerType::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
-        else if(std::is_same<typename ReducerType::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
-        else if(std::is_same<typename ReducerType::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
-        else if(std::is_same<typename ReducerType::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
-        else if(std::is_same<typename ReducerType::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
-        else if(std::is_same<typename ReducerType::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
+        if(std::is_same<typename ReducerTypeFwd::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
+        else if(std::is_same<typename ReducerTypeFwd::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
     }
     //如果是custom reducer，则不作处理
 
