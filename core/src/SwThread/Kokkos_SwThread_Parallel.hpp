@@ -134,7 +134,7 @@ class TeamPolicyInternal<Kokkos::SwThread, Properties...>
 
   template <class... OtherProperties>
   TeamPolicyInternal(
-      const TeamPolicyInternal<Kokkos::Threads, OtherProperties...>& p) {
+      const TeamPolicyInternal<Kokkos::SwThread, OtherProperties...>& p) {
     m_league_size            = p.m_league_size;
     m_team_size              = p.m_team_size;
   }
@@ -167,7 +167,7 @@ class TeamPolicyInternal<Kokkos::SwThread, Properties...>
       //set leagea and team size
       const int max_team_size = num_threads;
       m_league_size = league_size_request;
-      m_team_size = team_size_request > max_team_size ? max_team_size : team_size_request;
+      m_team_size = 1;
   }
 
   TeamPolicyInternal(int league_size_request, int team_size_request,
@@ -189,7 +189,7 @@ class TeamPolicyInternal<Kokkos::SwThread, Properties...>
       //set leagea and team size
       const int max_team_size = num_threads;
       m_league_size = league_size_request;
-      m_team_size = team_size_request > max_team_size ? max_team_size : team_size_request;
+      m_team_size = 1;
   }
 
 };
@@ -200,7 +200,7 @@ class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
                   Kokkos::SwThread> {
  private:
   using Policy =
-      Kokkos::Impl::TeamPolicyInternal<Kokkos::Threads, Properties...>;
+      Kokkos::Impl::TeamPolicyInternal<Kokkos::SwThread, Properties...>;
   using WorkTag = typename Policy::work_tag;
   using Member  = typename Policy::member_type;
 
