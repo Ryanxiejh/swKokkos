@@ -110,7 +110,25 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>,
 
 //----------------------------------------------------------------------------
 /* ParallelFor Kokkos::Threads with TeamPolicy */
-class SwThreadTeamMember{};
+class SwThreadTeamMember{
+ private:
+  int m_team_size;
+  int m_team_rank;
+  int m_league_size;
+  int m_league_rank;
+
+public:
+    KOKKOS_INLINE_FUNCTION int league_rank() const { return m_league_rank; }
+    KOKKOS_INLINE_FUNCTION int league_size() const { return m_league_size; }
+    KOKKOS_INLINE_FUNCTION int team_rank() const { return m_team_rank; }
+    KOKKOS_INLINE_FUNCTION int team_size() const { return m_team_size; }
+
+    SwThreadTeamMember()
+        :m_team_size(0),
+         m_team_rank(0),
+         m_league_size(0),
+         m_league_rank(0){}
+};
 
 template <class... Properties>
 class TeamPolicyInternal<Kokkos::SwThread, Properties...>
