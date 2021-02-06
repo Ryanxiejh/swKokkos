@@ -13,6 +13,7 @@
 #include <impl/Kokkos_FunctorAdapter.hpp>
 #include <impl/Kokkos_HostThreadTeam.hpp>
 #include <KokkosExp_MDRangePolicy.hpp>
+#include <Kokkos_Parallel_Reduce.hpp>
 
 //----------------------------------------------------------------------------
 
@@ -216,7 +217,6 @@ class TeamPolicyInternal<Kokkos::SwThread, Properties...>
 
 };
 
-
 template <class FunctorType, class... Properties>
 class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
                   Kokkos::SwThread> {
@@ -232,9 +232,11 @@ class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
 
  public:
   inline void execute() const {
+
     //set leagea and team size for athread
     sw_host_league_size = m_policy.league_size();
     sw_host_team_size = m_policy.team_size();
+
     //set execute pattern and policy
     exec_patten = sw_Parallel_For;
     target_policy = sw_TeamPolicy;
@@ -251,6 +253,114 @@ class ParallelFor<FunctorType, Kokkos::TeamPolicy<Properties...>,
         m_policy(arg_policy) {}
 };
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+/* ParallelReduce with Kokkos::Threads and RangePolicy */
+
+template <class FunctorType, class ReducerType, class... Traits>
+class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
+                     Kokkos::SwThread> {
+ private:
+  using Policy = Kokkos::RangePolicy<Traits...>;
+
+  using WorkTag   = typename Policy::work_tag;
+  using WorkRange = typename Policy::WorkRange;
+  using Member    = typename Policy::member_type;
+
+  using ReducerConditional =
+      Kokkos::Impl::if_c<std::is_same<InvalidType, ReducerType>::value,
+                         FunctorType, ReducerType>;
+  using ReducerTypeFwd = typename ReducerConditional::type;
+  using WorkTagFwd =
+      typename Kokkos::Impl::if_c<std::is_same<InvalidType, ReducerType>::value,
+                                  WorkTag, void>::type;
+
+  using ValueTraits =
+      Kokkos::Impl::FunctorValueTraits<ReducerTypeFwd, WorkTagFwd>;
+  using ValueInit = Kokkos::Impl::FunctorValueInit<ReducerTypeFwd, WorkTagFwd>;
+
+  using pointer_type   = typename ValueTraits::pointer_type;
+  using reference_type = typename ValueTraits::reference_type;
+
+  const FunctorType m_functor;
+  const Policy m_policy;
+  const ReducerType m_reducer;
+  const pointer_type m_result_ptr;
+
+ public:
+  inline void execute() const {
+
+    //set reduce information for athread
+
+    //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
+    //sw_reducer_type也会设置为相应值，这里只需获取其数据类型
+    if(is_buildin_reducer == 1){
+        if(std::is_same<m_reducer::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
+        else if(std::is_same<m_reducer::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
+        else if(std::is_same<m_reducer::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
+        else if(std::is_same<m_reducer::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
+        else if(std::is_same<m_reducer::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
+        else if(std::is_same<m_reducer::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
+        else if(std::is_same<m_reducer::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
+        else if(std::is_same<m_reducer::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
+        else if(std::is_same<m_reducer::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
+    }
+    //如果是custom reducer，则不作处理
+
+    //获取reducer的数据长度
+    sw_redecer_length = ValueTraits::value_count(
+                            ReducerConditional::select(m_functor, m_reducer));
+
+    //设置reducer的数据指针
+    sw_reducer_ptr = m_result_ptr;
+
+    //set range for athread
+    rp_range[0] = (this->m_policy).begin();
+    rp_range[1] = (this->m_policy).end();
+
+    //set execute pattern and policy
+    exec_patten = sw_Parallel_Reduce;
+    target_policy = sw_Range_Policy;
+
+    //execution start
+    sw_create_threads();
+
+    //move the user function ptr to the next
+    user_func_index+=1;
+    is_buildin_reducer=0; //重置该值
+  }
+
+  template <class HostViewType>
+  ParallelReduce(
+      const FunctorType &arg_functor, const Policy &arg_policy,
+      const HostViewType &arg_result_view,
+      typename std::enable_if<Kokkos::is_view<HostViewType>::value &&
+                                  !Kokkos::is_reducer_type<ReducerType>::value,
+                              void *>::type = nullptr)
+      : m_functor(arg_functor),
+        m_policy(arg_policy),
+        m_reducer(InvalidType()),
+        m_result_ptr(arg_result_view.data()) {
+    static_assert(Kokkos::is_view<HostViewType>::value,
+                  "Kokkos::Threads reduce result must be a View");
+
+    static_assert(
+        std::is_same<typename HostViewType::memory_space, HostSpace>::value,
+        "Kokkos::Threads reduce result must be a View in HostSpace");
+  }
+
+  inline ParallelReduce(const FunctorType &arg_functor, Policy arg_policy,
+                        const ReducerType &reducer)
+      : m_functor(arg_functor),
+        m_policy(arg_policy),
+        m_reducer(reducer),
+        m_result_ptr(reducer.view().data()) {
+    /*static_assert( std::is_same< typename ViewType::memory_space
+                                    , Kokkos::HostSpace >::value
+      , "Reduction result on Kokkos::OpenMP must be a Kokkos::View in HostSpace"
+      );*/
+  }
+};
 
 }
 }

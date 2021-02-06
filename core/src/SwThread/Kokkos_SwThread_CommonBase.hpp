@@ -28,7 +28,7 @@ extern size_t* data_dimension[64];
 extern void(*currentFunc[64])(int);
 extern void(*pForFunc[64])(int);
 //extern HashTable* ht;
-extern void* volatile reducer;
+extern void* volatile sw_reducer_ptr;
 
 typedef enum sw_Layout{
     sw_LAYOUT_RIGHT=0, //普通view
@@ -77,15 +77,20 @@ typedef enum sw_Reduce_ValueType{
 }sw_ValueType;
 
 typedef enum sw_ReducerType{
-    sw_Reduce_SUM=0,
-    sw_Reduce_MIN,
-    sw_Reduce_MAX
+	sw_Reduce_SUM=0,
+	sw_Reduce_MIN,
+	sw_Reduce_MAX,
+	sw_Reduce_PROD,
+	sw_Reduce_LAND,
+	sw_Reduce_LOR,
+	sw_Reduce_BAND,
+	sw_Reduce_BOR
 }sw_ReducerType;
 //如果是要在cpp中给这些赋值，则保留；如果是在线程初始化时赋值，就用下面在ldm上定义的
 extern volatile int is_buildin_reducer;
-extern volatile sw_ReducerType reducer_type;
-extern volatile sw_ValueType reducer_return_value_type;
-extern volatile int redecer_length;
+extern volatile sw_ReducerType sw_reducer_type;
+extern volatile sw_ValueType sw_reducer_return_value_type;
+extern volatile int sw_redecer_length;
 
 //scan
 extern volatile long h_update[65];
