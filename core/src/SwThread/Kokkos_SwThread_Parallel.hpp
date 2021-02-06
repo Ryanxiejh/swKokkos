@@ -292,6 +292,9 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     //set reduce information for athread
 
+    //初始化一个reducer对象，从而获取reducer的信息
+    ReducerTypeFwd reducerTypeFwd;
+
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
     //sw_reducer_type也会设置为相应值，这里只需获取其数据类型
     if(is_buildin_reducer == 1){
