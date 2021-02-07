@@ -28,7 +28,6 @@ extern size_t* data_dimension[64];
 extern void(*currentFunc[64])(int);
 extern void(*pForFunc[64])(int);
 //extern HashTable* ht;
-extern void* volatile sw_reducer_ptr;
 
 typedef enum sw_Layout{
     sw_LAYOUT_RIGHT=0, //普通view
@@ -91,6 +90,8 @@ extern volatile int is_buildin_reducer;
 extern volatile sw_ReducerType sw_reducer_type;
 extern volatile sw_ValueType sw_reducer_return_value_type;
 extern volatile int sw_redecer_length;
+extern volatile int sw_custome_reducer_index;
+extern void* volatile sw_reducer_ptr;
 
 //scan
 extern volatile long h_update[65];

@@ -294,6 +294,7 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     printf("//-----------------------------------------------\n");
 
+    //初始化reducer中的数据值
     ValueInit::init(ReducerConditional::select(m_functor, m_reducer),
             (void*)m_result_ptr);
 
@@ -302,7 +303,6 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
     if(std::is_same<ReducerType,InvalidType>::value){
         is_buildin_reducer = 1;
         sw_reducer_type = sw_Reduce_SUM;
-
         printf("SwThread use default reducer!\n");
     }
 
@@ -346,7 +346,10 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     //move the user function ptr to the next
     user_func_index+=1;
-    is_buildin_reducer=0; //重置该值
+
+    //修改相应值
+    if(is_buildin_reducer == 0) sw_custome_reducer_index+=1;
+    is_buildin_reducer=0;
   }
 
   template <class HostViewType>

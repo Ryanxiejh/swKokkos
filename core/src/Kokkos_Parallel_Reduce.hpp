@@ -143,16 +143,20 @@ struct Prod {
   KOKKOS_INLINE_FUNCTION
   Prod(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_PROD;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   Prod(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_PROD;
+#endif
   }
 
   // Required
@@ -196,16 +200,20 @@ struct Min {
   KOKKOS_INLINE_FUNCTION
   Min(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_MIN;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   Min(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_MIN;
+#endif
   }
 
   // Required
@@ -251,16 +259,20 @@ struct Max {
   KOKKOS_INLINE_FUNCTION
   Max(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_MAX;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   Max(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_MAX;
+#endif
   }
 
   // Required
@@ -307,16 +319,20 @@ struct LAnd {
   KOKKOS_INLINE_FUNCTION
   LAnd(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_LAND;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   LAnd(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_LAND;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
@@ -361,16 +377,20 @@ struct LOr {
   KOKKOS_INLINE_FUNCTION
   LOr(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_LOR;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   LOr(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_LOR;
+#endif
   }
 
   // Required
@@ -416,16 +436,20 @@ struct BAnd {
   KOKKOS_INLINE_FUNCTION
   BAnd(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_BAND;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   BAnd(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_BAND;
+#endif
   }
 
   // Required
@@ -471,16 +495,20 @@ struct BOr {
   KOKKOS_INLINE_FUNCTION
   BOr(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_BOR;
+#endif
   }
 
   KOKKOS_INLINE_FUNCTION
   BOr(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+#if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_BOR;
+#endif
   }
 
   // Required
