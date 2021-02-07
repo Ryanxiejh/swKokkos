@@ -84,16 +84,22 @@ struct Sum {
   KOKKOS_INLINE_FUNCTION
   Sum(value_type& value_) : value(&value_), references_scalar_v(true) {
       //Ryanxiejh 2021/2/6
+      #if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_SUM;
+      init(reference());
+      #endif
   }
 
   KOKKOS_INLINE_FUNCTION
   Sum(const result_view_type& value_)
       : value(value_), references_scalar_v(false) {
       //Ryanxiejh 2021/2/6
+      #if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_SUM;
+      init(reference());
+      #endif
   }
 
   // Required
