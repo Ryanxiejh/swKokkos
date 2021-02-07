@@ -294,7 +294,7 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     printf("//-----------------------------------------------\n");
 
-    ValueInit::init(ReducerConditional::select(self.m_functor, self.m_reducer),
+    ValueInit::init(ReducerConditional::select(m_functor, m_reducer),
             (void*)m_result_ptr);
 
     //如果使用默认reducer，即用户在构造函数中传进来reducer的类型时标量或者view，此时ReducerType是InvalidType，而这个情况下使默认使用
