@@ -87,7 +87,7 @@ struct Sum {
       #if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_SUM;
-      init(reference());
+      //init(reference());
       #endif
   }
 
@@ -98,7 +98,7 @@ struct Sum {
       #if defined(KOKKOS_ENABLE_SWTHREAD)
       is_buildin_reducer = 1;
       sw_reducer_type = sw_Reduce_SUM;
-      init(reference());
+      //init(reference());
       #endif
   }
 

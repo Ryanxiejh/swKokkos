@@ -294,11 +294,15 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     printf("//-----------------------------------------------\n");
 
+    ValueInit::init(ReducerConditional::select(self.m_functor, self.m_reducer),
+            (void*)m_result_ptr);
+
     //如果使用默认reducer，即用户在构造函数中传进来reducer的类型时标量或者view，此时ReducerType是InvalidType，而这个情况下使默认使用
     //built-in reducer中的sum，所以在此进行特殊处理
     if(std::is_same<ReducerType,InvalidType>::value){
         is_buildin_reducer = 1;
         sw_reducer_type = sw_Reduce_SUM;
+
         printf("SwThread use default reducer!\n");
     }
 
