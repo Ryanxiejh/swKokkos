@@ -526,8 +526,8 @@ class ParallelReduce<FunctorType, Kokkos::MDRangePolicy<Traits...>, ReducerType,
 
 //----------------------------------------------------------------------------
 /* ParallelReduce with Kokkos::Threads and TeamPolicy */
-template <class FunctorType, class ReducerType, class... Traits>
-class ParallelReduce<FunctorType, Kokkos::TeamPolicy<Traits...>, ReducerType,
+template <class FunctorType, class ReducerType, class... Properties>
+class ParallelReduce<FunctorType, Kokkos::TeamPolicy<Properties...>, ReducerType,
                      Kokkos::SwThread> {
  private:
   using Policy =
