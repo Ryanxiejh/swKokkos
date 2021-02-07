@@ -646,6 +646,7 @@ class ParallelReduce<FunctorType, Kokkos::TeamPolicy<Properties...>, ReducerType
     }
 };
 
+
 }
 }
 
