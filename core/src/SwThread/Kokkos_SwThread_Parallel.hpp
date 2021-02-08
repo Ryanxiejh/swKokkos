@@ -338,7 +338,7 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
     rp_range[1] = (this->m_policy).end();
 
     //set execute pattern and policy
-    exec_patten = sw_Parallel_Scan;
+    exec_patten = sw_Parallel_Reduce;
     target_policy = sw_Range_Policy;
 
     //execution start
@@ -681,19 +681,19 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
   inline void execute() const {
 
     //分配内存并初始化scan相关的值
-//    pre_update = malloc(ValueTraits::value_size(m_functor));
-//    ValueInit::init(m_functor,pre_update);
-//    for(int i = 0; i < 64 ; i++){
-//        temp_update[i] = malloc(ValueTraits::value_size(m_functor));
-//        ValueInit::init(m_functor,temp_update[i]);
-//    }
+    pre_update = malloc(ValueTraits::value_size(m_functor));
+    ValueInit::init(m_functor,pre_update);
+    for(int i = 0; i < 64 ; i++){
+        temp_update[i] = malloc(ValueTraits::value_size(m_functor));
+        ValueInit::init(m_functor,temp_update[i]);
+    }
 
     //判断是否使用的是默认scan，也即sum
-//    using Join  = Kokkos::Impl::FunctorValueJoin<FunctorType, WorkTag>; //获取reduce方法(默认的,或built-in/custom reducer)
-//    if(Join::is_builtin_scan == 1){
-//        is_buildin_reducer = 1;
-//        sw_reducer_type = sw_Reduce_SUM;
-//    }
+    using Join  = Kokkos::Impl::FunctorValueJoin<FunctorType, WorkTag>; //获取reduce方法(默认的,或built-in/custom reducer)
+    if(Join::is_builtin_scan == 1){
+        is_buildin_reducer = 1;
+        sw_reducer_type = sw_Reduce_SUM;
+    }
 
     is_buildin_reducer = 1;
     sw_reducer_type = sw_Reduce_SUM;
@@ -701,23 +701,23 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
 
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
     //sw_reducer_type也会设置为相应值，这里只需获取其数据类型
-//    if(is_buildin_reducer == 1){
-//        if(std::is_same<typename FunctorType::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
-//        else if(std::is_same<typename FunctorType::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
-//        else if(std::is_same<typename FunctorType::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
-//        else if(std::is_same<typename FunctorType::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
-//        else if(std::is_same<typename FunctorType::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
-//        else if(std::is_same<typename FunctorType::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
-//        else if(std::is_same<typename FunctorType::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
-//        else if(std::is_same<typename FunctorType::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
-//        else if(std::is_same<typename FunctorType::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
-//        printf("SwThread use built-in reducer!\n");
-//    }
+    if(is_buildin_reducer == 1){
+        if(std::is_same<typename FunctorType::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
+        else if(std::is_same<typename FunctorType::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
+        else if(std::is_same<typename FunctorType::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
+        else if(std::is_same<typename FunctorType::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
+        else if(std::is_same<typename FunctorType::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
+        else if(std::is_same<typename FunctorType::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
+        else if(std::is_same<typename FunctorType::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
+        else if(std::is_same<typename FunctorType::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
+        else if(std::is_same<typename FunctorType::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
+        printf("SwThread use built-in reducer!\n");
+    }
     //如果是custom reducer，则不作处理
-//    else printf("SwThread use custom reducer!\n");
+    else printf("SwThread use custom reducer!\n");
 
     //获取reducer的数据长度
-    //sw_redecer_length = ValueTraits::value_count(m_functor);
+    sw_redecer_length = ValueTraits::value_count(m_functor);
     //sw_redecer_length = 1;
 
     printf("SwThread reducer length: %d\n",sw_redecer_length);
@@ -742,10 +742,10 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
     }
 
     //回收scan相关的值分配的内存
-//    free(pre_update);
-//    for(int i = 0; i < 64 ; i++){
-//        free(temp_update[i]);
-//    }
+    free(pre_update);
+    for(int i = 0; i < 64 ; i++){
+        free(temp_update[i]);
+    }
   }
 
   ParallelScan(const FunctorType &arg_functor, const Policy &arg_policy)
