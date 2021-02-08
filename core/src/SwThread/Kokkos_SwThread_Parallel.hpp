@@ -695,9 +695,9 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
         sw_reducer_type = sw_Reduce_SUM;
     }
 
-    is_buildin_reducer = 1;
-    sw_reducer_type = sw_Reduce_SUM;
-    sw_reducer_return_value_type = sw_TYPE_LONG;
+//    is_buildin_reducer = 1;
+//    sw_reducer_type = sw_Reduce_SUM;
+//    sw_reducer_return_value_type = sw_TYPE_LONG;
 
     printf("//-----------------------------------------------\n");
 
