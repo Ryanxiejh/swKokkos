@@ -614,8 +614,8 @@ class ParallelReduce<FunctorType, Kokkos::TeamPolicy<Properties...>, ReducerType
     sw_host_team_size = m_policy.team_size();
 
     //set execute pattern and policy
-    exec_patten = sw_Parallel_Reduce;
-    target_policy = sw_TeamPolicy;
+    exec_patten = sw_Parallel_Scan;
+    target_policy = sw_Range_Policy;
 
     //execution start
     sw_create_threads();
