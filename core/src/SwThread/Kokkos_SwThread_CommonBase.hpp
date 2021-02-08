@@ -94,9 +94,9 @@ extern volatile int sw_custome_reducer_index;
 extern void* volatile sw_reducer_ptr;
 
 //scan
-extern volatile void* pre_update;
-extern volatile void* temp_update[65];
-extern volatile void* temp_update2;
+extern void* pre_update;
+extern void* temp_update[65];
+extern void* temp_update2;
 
 //MDR host
 extern volatile int data[640000][64];
