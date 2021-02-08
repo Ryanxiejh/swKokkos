@@ -1539,6 +1539,11 @@ struct FunctorValueJoin<FunctorType, ArgTag, T&, Enable> {
   void operator()(volatile T& lhs, const volatile T& rhs) const { lhs += rhs; }
   KOKKOS_FORCEINLINE_FUNCTION
   void operator()(T& lhs, const T& rhs) const { lhs += rhs; }
+
+//Ryanxiejh 2021/2/8
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+    static int is_builtin_scan = 1;
+#endif
 };
 
 /* No 'join' function provided, array of values */
@@ -1574,6 +1579,11 @@ struct FunctorValueJoin<FunctorType, ArgTag, T*, Enable> {
       lhs[i] += rhs[i];
     }
   }
+
+//Ryanxiejh 2021/2/8
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        static int is_builtin_scan = 1;
+#endif
 };
 
 /* 'join' function provided, single value */
@@ -1603,6 +1613,11 @@ struct FunctorValueJoin<
   }
   KOKKOS_FORCEINLINE_FUNCTION
   void operator()(T& lhs, const T& rhs) const { f.join(ArgTag(), lhs, rhs); }
+
+//Ryanxiejh 2021/2/8
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        static int is_builtin_scan = 0;
+#endif
 };
 
 /* 'join' function provided, no tag, single value */
@@ -1632,6 +1647,11 @@ struct FunctorValueJoin<
   }
   KOKKOS_FORCEINLINE_FUNCTION
   void operator()(T& lhs, const T& rhs) const { f.join(lhs, rhs); }
+
+//Ryanxiejh 2021/2/8
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        static int is_builtin_scan = 0;
+#endif
 };
 
 /* 'join' function provided for array value */
@@ -1661,6 +1681,11 @@ struct FunctorValueJoin<
   }
   KOKKOS_FORCEINLINE_FUNCTION
   void operator()(T* lhs, const T* rhs) const { f.join(ArgTag(), lhs, rhs); }
+
+//Ryanxiejh 2021/2/8
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        static int is_builtin_scan = 0;
+#endif
 };
 
 /* 'join' function provided, no tag, array value */
@@ -1690,6 +1715,11 @@ struct FunctorValueJoin<
   }
   KOKKOS_FORCEINLINE_FUNCTION
   void operator()(T* lhs, const T* rhs) const { f.join(lhs, rhs); }
+
+//Ryanxiejh 2021/2/8
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        static int is_builtin_scan = 0;
+#endif
 };
 
 }  // namespace Impl
