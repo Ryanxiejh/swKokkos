@@ -646,6 +646,133 @@ class ParallelReduce<FunctorType, Kokkos::TeamPolicy<Properties...>, ReducerType
     }
 };
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+/* ParallelScan with Kokkos::Threads and RangePolicy */
+template <class FunctorType, class... Traits>
+class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
+                   Kokkos::SwThread> {
+ private:
+  using Policy      = Kokkos::RangePolicy<Traits...>;
+  using WorkRange   = typename Policy::WorkRange;
+  using WorkTag     = typename Policy::work_tag;
+  using Member      = typename Policy::member_type;
+  using ValueTraits = Kokkos::Impl::FunctorValueTraits<FunctorType, WorkTag>;
+  using ValueInit   = Kokkos::Impl::FunctorValueInit<FunctorType, WorkTag>;
+
+  using pointer_type   = typename ValueTraits::pointer_type;
+  using reference_type = typename ValueTraits::reference_type;
+
+  const FunctorType m_functor;
+  const Policy m_policy;
+
+ public:
+  inline void execute() const {
+
+    //set range for athread
+    rp_range[0] = (this->m_policy).begin();
+    rp_range[1] = (this->m_policy).end();
+
+    //set execute pattern and policy
+    exec_patten = sw_Parallel_Scan;
+    target_policy = sw_Range_Policy;
+
+    //execution start
+    sw_create_threads();
+
+    //move the user function ptr to the next
+    user_func_index+=1;
+
+  }
+
+  ParallelScan(const FunctorType &arg_functor, const Policy &arg_policy)
+      : m_functor(arg_functor), m_policy(arg_policy) {}
+};
+
+template <class FunctorType, class ReturnType, class... Traits>
+class ParallelScanWithTotal<FunctorType, Kokkos::RangePolicy<Traits...>,
+                            ReturnType, Kokkos::SwThread> {
+ private:
+  using Policy      = Kokkos::RangePolicy<Traits...>;
+  using WorkRange   = typename Policy::WorkRange;
+  using WorkTag     = typename Policy::work_tag;
+  using Member      = typename Policy::member_type;
+  using ValueTraits = Kokkos::Impl::FunctorValueTraits<FunctorType, WorkTag>;
+  using ValueInit   = Kokkos::Impl::FunctorValueInit<FunctorType, WorkTag>;
+
+  using pointer_type   = typename ValueTraits::pointer_type;
+  using reference_type = typename ValueTraits::reference_type;
+
+  const FunctorType m_functor;
+  const Policy m_policy;
+  ReturnType &m_returnvalue;
+
+  template <class TagType>
+  inline static
+      typename std::enable_if<std::is_same<TagType, void>::value>::type
+      exec_range(const FunctorType &functor, const Member &ibeg,
+                 const Member &iend, reference_type update, const bool final) {
+#if defined(KOKKOS_ENABLE_AGGRESSIVE_VECTORIZATION) && \
+    defined(KOKKOS_ENABLE_PRAGMA_IVDEP)
+#pragma ivdep
+#endif
+    for (Member i = ibeg; i < iend; ++i) {
+      functor(i, update, final);
+    }
+  }
+
+  template <class TagType>
+  inline static
+      typename std::enable_if<!std::is_same<TagType, void>::value>::type
+      exec_range(const FunctorType &functor, const Member &ibeg,
+                 const Member &iend, reference_type update, const bool final) {
+    const TagType t{};
+#if defined(KOKKOS_ENABLE_AGGRESSIVE_VECTORIZATION) && \
+    defined(KOKKOS_ENABLE_PRAGMA_IVDEP)
+#pragma ivdep
+#endif
+    for (Member i = ibeg; i < iend; ++i) {
+      functor(t, i, update, final);
+    }
+  }
+
+  static void exec(ThreadsExec &exec, const void *arg) {
+    const ParallelScanWithTotal &self = *((const ParallelScanWithTotal *)arg);
+
+    const WorkRange range(self.m_policy, exec.pool_rank(), exec.pool_size());
+
+    reference_type update =
+        ValueInit::init(self.m_functor, exec.reduce_memory());
+
+    ParallelScanWithTotal::template exec_range<WorkTag>(
+        self.m_functor, range.begin(), range.end(), update, false);
+
+    //  exec.template scan_large<FunctorType,WorkTag>( self.m_functor );
+    exec.template scan_small<FunctorType, WorkTag>(self.m_functor);
+
+    ParallelScanWithTotal::template exec_range<WorkTag>(
+        self.m_functor, range.begin(), range.end(), update, true);
+
+    exec.fan_in();
+
+    if (exec.pool_rank() == exec.pool_size() - 1) {
+      self.m_returnvalue = update;
+    }
+  }
+
+ public:
+  inline void execute() const {
+    ThreadsExec::resize_scratch(2 * ValueTraits::value_size(m_functor), 0);
+    ThreadsExec::start(&ParallelScanWithTotal::exec, this);
+    ThreadsExec::fence();
+  }
+
+  ParallelScanWithTotal(const FunctorType &arg_functor,
+                        const Policy &arg_policy, ReturnType &arg_returnvalue)
+      : m_functor(arg_functor),
+        m_policy(arg_policy),
+        m_returnvalue(arg_returnvalue) {}
+};
 
 }
 }
