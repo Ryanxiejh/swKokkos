@@ -1542,7 +1542,7 @@ struct FunctorValueJoin<FunctorType, ArgTag, T&, Enable> {
 
 //Ryanxiejh 2021/2/8
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-    static int is_builtin_scan = 1;
+    static const int is_builtin_scan = 1;
 #endif
 };
 
@@ -1582,7 +1582,7 @@ struct FunctorValueJoin<FunctorType, ArgTag, T*, Enable> {
 
 //Ryanxiejh 2021/2/8
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-        static int is_builtin_scan = 1;
+        static const int is_builtin_scan = 1;
 #endif
 };
 
@@ -1616,7 +1616,7 @@ struct FunctorValueJoin<
 
 //Ryanxiejh 2021/2/8
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-        static int is_builtin_scan = 0;
+        static const int is_builtin_scan = 0;
 #endif
 };
 
@@ -1650,7 +1650,7 @@ struct FunctorValueJoin<
 
 //Ryanxiejh 2021/2/8
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-        static int is_builtin_scan = 0;
+        static const int is_builtin_scan = 0;
 #endif
 };
 
@@ -1684,7 +1684,7 @@ struct FunctorValueJoin<
 
 //Ryanxiejh 2021/2/8
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-        static int is_builtin_scan = 0;
+        static const int is_builtin_scan = 0;
 #endif
 };
 
@@ -1718,7 +1718,7 @@ struct FunctorValueJoin<
 
 //Ryanxiejh 2021/2/8
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-        static int is_builtin_scan = 0;
+        static const int is_builtin_scan = 0;
 #endif
 };
 
