@@ -695,28 +695,29 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
 //        sw_reducer_type = sw_Reduce_SUM;
 //    }
 
-    is_buildin_reducer = 1;
-    sw_reducer_type = sw_Reduce_SUM;
+//    is_buildin_reducer = 1;
+//    sw_reducer_type = sw_Reduce_SUM;
 
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
     //sw_reducer_type也会设置为相应值，这里只需获取其数据类型
-    if(is_buildin_reducer == 1){
-        if(std::is_same<typename FunctorType::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
-        else if(std::is_same<typename FunctorType::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
-        else if(std::is_same<typename FunctorType::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
-        else if(std::is_same<typename FunctorType::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
-        else if(std::is_same<typename FunctorType::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
-        else if(std::is_same<typename FunctorType::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
-        else if(std::is_same<typename FunctorType::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
-        else if(std::is_same<typename FunctorType::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
-        else if(std::is_same<typename FunctorType::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
-        printf("SwThread use built-in reducer!\n");
-    }
+//    if(is_buildin_reducer == 1){
+//        if(std::is_same<typename FunctorType::value_type,int>::value) sw_reducer_return_value_type = sw_TYPE_INT;
+//        else if(std::is_same<typename FunctorType::value_type,long>::value) sw_reducer_return_value_type = sw_TYPE_LONG;
+//        else if(std::is_same<typename FunctorType::value_type,float>::value) sw_reducer_return_value_type = sw_TYPE_FLOAT;
+//        else if(std::is_same<typename FunctorType::value_type,double>::value) sw_reducer_return_value_type = sw_TYPE_DOUBLE;
+//        else if(std::is_same<typename FunctorType::value_type,unsigned int>::value) sw_reducer_return_value_type = sw_TYPE_UINT;
+//        else if(std::is_same<typename FunctorType::value_type,unsigned long>::value) sw_reducer_return_value_type = sw_TYPE_ULONG;
+//        else if(std::is_same<typename FunctorType::value_type,char>::value) sw_reducer_return_value_type = sw_TYPE_CHAR;
+//        else if(std::is_same<typename FunctorType::value_type,short>::value) sw_reducer_return_value_type = sw_TYPE_SHORT;
+//        else if(std::is_same<typename FunctorType::value_type,unsigned short>::value) sw_reducer_return_value_type = sw_TYPE_USHORT;
+//        printf("SwThread use built-in reducer!\n");
+//    }
     //如果是custom reducer，则不作处理
-    else printf("SwThread use custom reducer!\n");
+//    else printf("SwThread use custom reducer!\n");
 
     //获取reducer的数据长度
-    sw_redecer_length = ValueTraits::value_count(m_functor);
+    //sw_redecer_length = ValueTraits::value_count(m_functor);
+    //sw_redecer_length = 1;
 
     printf("SwThread reducer length: %d\n",sw_redecer_length);
     printf("//-----------------------------------------------\n");
