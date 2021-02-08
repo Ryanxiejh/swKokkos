@@ -710,6 +710,21 @@ class ParallelScanWithTotal<FunctorType, Kokkos::RangePolicy<Traits...>,
  public:
   inline void execute() const {
 
+    //set range for athread
+    rp_range[0] = (this->m_policy).begin();
+    rp_range[1] = (this->m_policy).end();
+
+    //set execute pattern and policy
+    exec_patten = sw_Parallel_Scan;
+    target_policy = sw_Range_Policy;
+
+    //execution start
+    sw_create_threads();
+
+    //move the user function ptr to the next
+    user_func_index+=1;
+
+    //update m_returnvalue
   }
 
   ParallelScanWithTotal(const FunctorType &arg_functor,
