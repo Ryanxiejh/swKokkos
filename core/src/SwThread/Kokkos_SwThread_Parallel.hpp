@@ -681,12 +681,12 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
   inline void execute() const {
 
     //分配内存并初始化scan相关的值
-    pre_update = malloc(ValueTraits::value_size(m_functor));
-    ValueInit::init(m_functor,pre_update);
-    for(int i = 0; i < 64 ; i++){
-        temp_update[i] = malloc(ValueTraits::value_size(m_functor));
-        ValueInit::init(m_functor,temp_update[i]);
-    }
+//    pre_update = malloc(ValueTraits::value_size(m_functor));
+//    ValueInit::init(m_functor,pre_update);
+//    for(int i = 0; i < 64 ; i++){
+//        temp_update[i] = malloc(ValueTraits::value_size(m_functor));
+//        ValueInit::init(m_functor,temp_update[i]);
+//    }
 
     //判断是否使用的是默认scan，也即sum
 //    using Join  = Kokkos::Impl::FunctorValueJoin<FunctorType, WorkTag>; //获取reduce方法(默认的,或built-in/custom reducer)
@@ -740,10 +740,10 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
     }
 
     //回收scan相关的值分配的内存
-    free(pre_update);
-    for(int i = 0; i < 64 ; i++){
-        free(temp_update[i]);
-    }
+//    free(pre_update);
+//    for(int i = 0; i < 64 ; i++){
+//        free(temp_update[i]);
+//    }
   }
 
   ParallelScan(const FunctorType &arg_functor, const Policy &arg_policy)
