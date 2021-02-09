@@ -55,6 +55,11 @@
 #include <Kokkos_MemoryTraits.hpp>
 #include <Kokkos_ExecPolicy.hpp>
 
+//Ryanxiejh 2021/2/9
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+#include <SwThread/Kokkos_SwThread_CommonBase.hpp>
+#endif
+
 #if defined(KOKKOS_ENABLE_PROFILING)
 #include <impl/Kokkos_Profiling_Interface.hpp>
 #endif
@@ -1987,6 +1992,12 @@ class View : public ViewTraits<DataType, Properties...> {
 
     // Setup and initialization complete, start tracking
     m_track.assign_allocated_record_to_uninitialized(record);
+
+//Ryanxiejh 2021/2/9
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+    printf("Created a view!\n");
+#endif
+
   }
 
   KOKKOS_INLINE_FUNCTION
