@@ -1995,7 +1995,18 @@ class View : public ViewTraits<DataType, Properties...> {
 
 //Ryanxiejh 2021/2/9
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-    printf("Created a view!\n");
+        data_ptr[curViewIndex] = this->data();
+        for( int i = 0; i < Rank ; i++ ){
+            if( is_layout_right || is_layout_left ){
+                data_dimension[curViewIndex][i] = this->extent(i);
+                data_layout[i] = sw_LAYOUT_RIGHT;
+            }
+            else{
+                data_stride[curViewIndex][i] = this->stride(i);
+                data_layout[i] = sw_LAYOUT_STRIDE;
+            }
+        }
+        curViewIndex += 1;
 #endif
 
   }

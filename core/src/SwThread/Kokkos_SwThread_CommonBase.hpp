@@ -24,16 +24,16 @@ extern void* data_ptr[64];
 extern int num_threads;
 extern int N;
 extern int rp_range[2];
-extern size_t* data_dimension[64];
-extern void(*currentFunc[64])(int);
-extern void(*pForFunc[64])(int);
-//extern HashTable* ht;
-
+extern int data_dimension[64][8];
+extern int data_stride[64][8];
 typedef enum sw_Layout{
     sw_LAYOUT_RIGHT=0, //普通view
     sw_LAYOUT_STRIDE //subview
 }sw_Layout;
-
+extern sw_Layout data_layout[64];
+extern void(*currentFunc[64])(int);
+extern void(*pForFunc[64])(int);
+//extern HashTable* ht;
 
 //syn变量
 extern volatile int syn_value;
