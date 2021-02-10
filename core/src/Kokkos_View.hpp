@@ -1913,6 +1913,7 @@ class View : public ViewTraits<DataType, Properties...> {
         }
         curViewIndex += 1;
         printf("subview created...\n");
+        printf("curViewIndex: %d\n",curViewIndex);
     }
 #endif
   }
