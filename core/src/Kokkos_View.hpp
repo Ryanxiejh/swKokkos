@@ -1905,12 +1905,12 @@ class View : public ViewTraits<DataType, Properties...> {
 
 //Ryanxiejh 2021/2/10
 #if defined(KOKKOS_ENABLE_SWTHREAD)
-      data_ptr[curViewIndex] = this->data();
-        for( int i = 0; i < Rank ; i++ ){
-            data_stride[curViewIndex][i] = this->stride(i);
-            data_layout[i] = sw_LAYOUT_STRIDE;
-        }
-        curViewIndex += 1;
+//      data_ptr[curViewIndex] = this->data();
+//        for( int i = 0; i < Rank ; i++ ){
+//            data_stride[curViewIndex][i] = this->stride(i);
+//            data_layout[i] = sw_LAYOUT_STRIDE;
+//        }
+//        curViewIndex += 1;
         printf("subview created...\n");
 #endif
   }
