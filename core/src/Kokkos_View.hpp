@@ -1911,6 +1911,7 @@ class View : public ViewTraits<DataType, Properties...> {
             data_layout[i] = sw_LAYOUT_STRIDE;
         }
         curViewIndex += 1;
+        printf("subview created...\n");
 #endif
   }
 
