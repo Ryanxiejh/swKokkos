@@ -1903,7 +1903,7 @@ class View : public ViewTraits<DataType, Properties...> {
 
     Mapping::assign(m_map, src_view.m_map, arg0, args...);
 
-Ryanxiejh 2021/2/10
+//Ryanxiejh 2021/2/10
 #if defined(KOKKOS_ENABLE_SWTHREAD)
 //      data_ptr[curViewIndex] = this->data();
 //        for( int i = 0; i < Rank ; i++ ){
