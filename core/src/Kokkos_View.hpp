@@ -1909,7 +1909,7 @@ class View : public ViewTraits<DataType, Properties...> {
         data_ptr[curViewIndex] = this->data();
         for( int i = 0; i < Rank ; i++ ){
             data_stride[curViewIndex][i] = this->stride(i);
-            data_layout[i] = sw_LAYOUT_STRIDE;
+            data_layout[curViewIndex] = sw_LAYOUT_STRIDE;
         }
         curViewIndex += 1;
         printf("subview created...\n");
