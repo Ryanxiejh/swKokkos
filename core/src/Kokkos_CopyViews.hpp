@@ -3137,6 +3137,11 @@ resize(Kokkos::View<T, P...>& v, const size_t n0 = KOKKOS_IMPL_CTOR_DEFAULT_ARG,
        const size_t n7 = KOKKOS_IMPL_CTOR_DEFAULT_ARG) {
   typedef Kokkos::View<T, P...> view_type;
 
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+  sw_is_resize = 1;
+#endif
+
   static_assert(Kokkos::ViewTraits<T, P...>::is_managed,
                 "Can only resize managed views");
 
@@ -3213,6 +3218,12 @@ resize(Kokkos::View<T, P...>& v, const size_t n0 = KOKKOS_IMPL_CTOR_DEFAULT_ARG,
   Kokkos::Impl::ViewRemap<view_type, view_type>(v_resized, v);
 
   v = v_resized;
+
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        sw_is_resize = 0;
+#endif
+
 }
 
 /** \brief  Resize a view with copying old data to new data at the corresponding
@@ -3233,6 +3244,11 @@ resize(const I& arg_prop, Kokkos::View<T, P...>& v,
        const size_t n6 = KOKKOS_IMPL_CTOR_DEFAULT_ARG,
        const size_t n7 = KOKKOS_IMPL_CTOR_DEFAULT_ARG) {
   typedef Kokkos::View<T, P...> view_type;
+
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        sw_is_resize = 1;
+#endif
 
   static_assert(Kokkos::ViewTraits<T, P...>::is_managed,
                 "Can only resize managed views");
@@ -3311,6 +3327,12 @@ resize(const I& arg_prop, Kokkos::View<T, P...>& v,
   Kokkos::Impl::ViewRemap<view_type, view_type>(v_resized, v);
 
   v = v_resized;
+
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        sw_is_resize = 0;
+#endif
+
 }
 
 /** \brief  Resize a view with copying old data to new data at the corresponding
@@ -3320,6 +3342,11 @@ inline void resize(Kokkos::View<T, P...>& v,
                    const typename Kokkos::View<T, P...>::array_layout& layout) {
   typedef Kokkos::View<T, P...> view_type;
 
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        sw_is_resize = 1;
+#endif
+
   static_assert(Kokkos::ViewTraits<T, P...>::is_managed,
                 "Can only resize managed views");
 
@@ -3328,6 +3355,12 @@ inline void resize(Kokkos::View<T, P...>& v,
   Kokkos::Impl::ViewRemap<view_type, view_type>(v_resized, v);
 
   v = v_resized;
+
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SWTHREAD)
+        sw_is_resize = 0;
+#endif
+
 }
 
 /** \brief  Resize a view with discarding old data. */

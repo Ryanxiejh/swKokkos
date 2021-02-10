@@ -20,6 +20,7 @@ extern volatile int threadStates[64];
 extern volatile int threadReduceStates[64];
 extern long addr[65];
 extern volatile int curViewIndex; //记录view的index
+extern volatile int sw_is_resize; //用于判断是否调用了resize函数(因为其中会调用subview，但目的不是为了创建subview)
 extern void* data_ptr[64];
 extern int num_threads;
 extern int N;
