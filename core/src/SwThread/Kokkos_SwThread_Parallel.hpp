@@ -730,7 +730,9 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
 
     //获取reducer的数据长度
     sw_redecer_length = ValueTraits::value_count(m_functor);
-    //sw_redecer_length = 1;
+    //获取reducer的数据大小
+    sw_reducer_size = ValueTraits::value_size(
+                        ReducerConditional::select(m_functor, m_reducer));
 
     printf("SwThread reducer length: %d\n",sw_redecer_length);
     printf("//-----------------------------------------------\n");
@@ -829,7 +831,9 @@ class ParallelScanWithTotal<FunctorType, Kokkos::RangePolicy<Traits...>,
 
     //获取reducer的数据长度
     sw_redecer_length = ValueTraits::value_count(m_functor);
-    //sw_redecer_length = 1;
+    //获取reducer的数据大小
+    sw_reducer_size = ValueTraits::value_size(
+                        ReducerConditional::select(m_functor, m_reducer));
 
     printf("SwThread reducer length: %d\n",sw_redecer_length);
     printf("//-----------------------------------------------\n");
