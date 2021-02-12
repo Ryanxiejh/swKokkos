@@ -3137,6 +3137,7 @@ resize(Kokkos::View<T, P...>& v, const size_t n0 = KOKKOS_IMPL_CTOR_DEFAULT_ARG,
        const size_t n7 = KOKKOS_IMPL_CTOR_DEFAULT_ARG) {
   typedef Kokkos::View<T, P...> view_type;
 
+
 //Ryanxiejh
 #if defined(KOKKOS_ENABLE_SWTHREAD)
   sw_is_resize = 1;
