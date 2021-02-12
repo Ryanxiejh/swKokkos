@@ -93,6 +93,7 @@ extern volatile sw_ValueType sw_reducer_return_value_type;
 extern volatile int sw_redecer_length;
 extern volatile int sw_custome_reducer_index;
 extern void* volatile sw_reducer_ptr;
+extern volatile int sw_reducer_size;
 
 //scan
 extern void* pre_update;

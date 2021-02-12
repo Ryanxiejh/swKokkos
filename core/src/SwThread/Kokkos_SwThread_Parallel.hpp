@@ -294,7 +294,7 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
 
     printf("//-----------------------------------------------\n");
 
-    //初始化reducer中的数据值
+    //初始化host上reducer的数据值
     ValueInit::init(ReducerConditional::select(m_functor, m_reducer),
             (void*)m_result_ptr);
 
@@ -326,6 +326,9 @@ class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
     //获取reducer的数据长度
     sw_redecer_length = ValueTraits::value_count(
                             ReducerConditional::select(m_functor, m_reducer));
+    //获取reducer的数据大小
+    sw_reducer_size = ValueTraits::value_size(
+                        ReducerConditional::select(m_functor, m_reducer));
 
     printf("SwThread reducer length: %d\n",sw_redecer_length);
     printf("//-----------------------------------------------\n");
