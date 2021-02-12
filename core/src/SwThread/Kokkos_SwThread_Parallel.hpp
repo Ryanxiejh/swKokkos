@@ -705,10 +705,6 @@ class ParallelScan<FunctorType, Kokkos::RangePolicy<Traits...>,
         sw_reducer_type = sw_Reduce_SUM;
     }
 
-//    is_buildin_reducer = 1;
-//    sw_reducer_type = sw_Reduce_SUM;
-//    sw_reducer_return_value_type = sw_TYPE_LONG;
-
     printf("//-----------------------------------------------\n");
 
     //如果使用的是built-in reducer，在built-in reducer的构造函数里会将is_buildin_reducer设为1
@@ -804,10 +800,6 @@ class ParallelScanWithTotal<FunctorType, Kokkos::RangePolicy<Traits...>,
         is_buildin_reducer = 1;
         sw_reducer_type = sw_Reduce_SUM;
     }
-
-//    is_buildin_reducer = 1;
-//    sw_reducer_type = sw_Reduce_SUM;
-//    sw_reducer_return_value_type = sw_TYPE_LONG;
 
     printf("//-----------------------------------------------\n");
 
