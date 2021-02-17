@@ -1,0 +1,8 @@
+//
+// Created by Ryanxiejh on 2021/2/17.
+//
+
+#ifndef KOKKOS_KOKKOS_SYCL_PARALLEL_HPP
+#define KOKKOS_KOKKOS_SYCL_PARALLEL_HPP
+
+#endif //KOKKOS_KOKKOS_SYCL_PARALLEL_HPP
