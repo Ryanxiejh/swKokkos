@@ -1,6 +1,6 @@
 The system is: Windows - 10.0.18363 - AMD64
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-Compiler: E:/mingw64/bin/g++.exe 
+Compiler: D:/Dev-Cpp/MinGW64/bin/g++.exe 
 Build flags: 
 Id flags:  
 

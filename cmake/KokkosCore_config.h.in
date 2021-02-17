@@ -25,6 +25,8 @@
     Ryanxiejh 3/2/2021
  */
 #cmakedefine KOKKOS_ENABLE_SWTHREAD
+//Ryanxiejh 2021/2/17
+#cmakedefine KOKKOS_ENABLE_SYCL
 
 #ifndef __CUDA_ARCH__
 #cmakedefine KOKKOS_ENABLE_TM

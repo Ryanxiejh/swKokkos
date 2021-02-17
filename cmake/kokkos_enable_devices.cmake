@@ -26,6 +26,9 @@ IF (KOKKOS_ENABLE_SWTHREAD)
   #SET(KOKKOS_ENABLE_ATHREAD ON)
 ENDIF()
 
+#Ryanxiejh 2021/2/17
+KOKKOS_DEVICE_OPTION(SYCL       OFF DEVICE "Whether to build SYCL backend")
+
 KOKKOS_DEVICE_OPTION(PTHREAD       OFF HOST "Whether to build Pthread backend")
 IF (KOKKOS_ENABLE_PTHREAD)
   #patch the naming here
