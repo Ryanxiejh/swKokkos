@@ -10,10 +10,9 @@
 #include <Kokkos_Macros.hpp>
 #include <CL/sycl.hpp>
 #include <iostream>
-//#include <Kokkos_SYCL_Space.hpp>
+#include <Kokkos_HostSpace.hpp>
 #include <Kokkos_Layout.hpp>
 #include <Kokkos_ScratchSpace.hpp>
-#include <impl/Kokkos_ExecSpaceInitializer.hpp>
 #include <impl/Kokkos_Profiling_Interface.hpp>
 
 namespace Kokkos{
@@ -37,13 +36,14 @@ class SYCL{
   SYCL& operator=(SYCL&&) = default;
   SYCL& operator=(const SYCL&) = default;
 
+public:
   KOKKOS_INLINE_FUNCTION static int in_parallel() {
-      queue q;
+      cl::sycl::queue q;
       int N = 5;
-      int *data = malloc_shared<int>(N, q);
+      int *data = cl::sycl::malloc_shared<int>(N, q);
       for(int i=0; i<N; i++) data[i] = i;
 
-      q.parallel_for(range<1>(N), [=] (id<1> i){
+      q.parallel_for(cl::sycl::range<1>(N), [=] (cl::sycl::id<1> i){
         data[i] *= 2;
       }).wait();
 
@@ -54,8 +54,3 @@ class SYCL{
   }
 
 };
-
-}
-
-#endif
-#endif //KOKKOS_KOKKOS_SYCL_HPP
