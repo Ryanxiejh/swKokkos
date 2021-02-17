@@ -55,6 +55,11 @@
 #include <SwThread/Kokkos_SwThread.hpp>
 #endif
 
+//Ryanxiejh 2021/2/17
+#if defined(KOKKOS_ENABLE_SYCL)
+#include <SYCL/Kokkos_SYCL.hpp>
+#endif
+
 #if defined(KOKKOS_ENABLE_SERIAL)
 #include <Kokkos_Serial.hpp>
 #endif
