@@ -59,7 +59,7 @@ public:
   void fence() const;
 
   KOKKOS_INLINE_FUNCTION static size_t concurrency() {
-      return impl_internal_space_instance()->m_device.get_info<sycl::info::device::max_compute_units>();
+      return SYCL().impl_internal_space_instance()->m_device.get_info<sycl::info::device::max_compute_units>();
   }
 
   KOKKOS_INLINE_FUNCTION static const char* name() { return "SYCL" ;};
