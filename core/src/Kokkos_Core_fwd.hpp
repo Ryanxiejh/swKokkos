@@ -113,6 +113,7 @@ class HPX;  ///< Execution space with HPX back-end.
 //Ryanxiejh 2021/2/19
 #if defined(KOKKOS_ENABLE_SYCL)
     class SYCL;  ///< Execution space with SwThread back-end.
+    class SyclSpace;
 #endif
 
 #if defined(KOKKOS_ENABLE_THREADS)

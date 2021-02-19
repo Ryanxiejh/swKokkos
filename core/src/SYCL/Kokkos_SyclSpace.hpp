@@ -10,7 +10,6 @@
 #include <Kokkos_Macros.hpp>
 #include <Kokkos_Concepts.hpp>
 #include <impl/Kokkos_SharedAlloc.hpp>
-#include <impl/Kokkos_Tools.hpp>
 #include <Kokkos_HostSpace.hpp>
 #include <SYCL/Kokkos_SYCL.hpp>
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
