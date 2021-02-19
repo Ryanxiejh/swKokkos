@@ -2,7 +2,7 @@
 // Created by Ryanxiejh on 2021/2/19.
 //
 #if defined(KOKKOS_ENABLE_SYCL)
-#include <Kokkos_SyclSpace.hpp>
+#include <SYCL/Kokkos_SyclSpace.hpp>
 
 namespace Kokkos{
 
