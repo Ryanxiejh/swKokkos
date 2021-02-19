@@ -58,6 +58,9 @@
 //Ryanxiejh 2021/2/17
 #if defined(KOKKOS_ENABLE_SYCL)
 #include <SYCL/Kokkos_SYCL.hpp>
+#include <SYCL/Kokkos_SYCL_Instance.hpp>
+#include <SYCL/Kokkos_SyclSpace.hpp>
+#include <SYCL/Kokkos_SYCL_Parallel.hpp>
 #endif
 
 #if defined(KOKKOS_ENABLE_SERIAL)
