@@ -68,11 +68,15 @@ public:
 
   static void impl_finalize();
 
+  static int impl_is_initialized();
+
   KOKKOS_INLINE_FUNCTION Impl::SYCLInternal* impl_internal_space_instance() const {
     return m_space_instance;
   }
 
   int sycl_device() const;
+
+  uint32_t impl_instance_id() const noexcept { return 0; }
 
 private:
     Impl::SYCLInternal* m_space_instance;

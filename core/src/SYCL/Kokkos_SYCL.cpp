@@ -20,6 +20,10 @@ void SYCL::impl_initialize() {
 
 void SYCL::impl_finalize() { Impl::SYCLInternal::singleton().finalize(); }
 
+int SYCL::impl_is_initialized() {
+  return Impl::SYCLInternal::singleton().is_initialized();
+}
+
 int SYCL::sycl_device() const {
   return impl_internal_space_instance()->m_syclDev;
 }
