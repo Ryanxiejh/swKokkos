@@ -14,7 +14,7 @@
 #include <SYCL/Kokkos_SYCL.hpp>
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
 #include <impl/Kokkos_MemorySpace.hpp>
-#include <impl/Kokkos_Profiling.hpp>
+#include <impl/Kokkos_Profiling_Interface.hpp>
 
 namespace Kokkos{
 
