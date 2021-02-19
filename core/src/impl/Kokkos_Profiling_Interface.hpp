@@ -66,6 +66,7 @@ enum struct DeviceType {
   Cuda,
   HIP,
   OpenMPTarget,
+  SYCL,
   HPX,
   Threads
 };

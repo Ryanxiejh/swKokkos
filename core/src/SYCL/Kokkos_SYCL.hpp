@@ -9,6 +9,7 @@
 
 #include <Kokkos_Macros.hpp>
 #include <Kokkos_Core_fwd.hpp>
+#include <Kokkos_Core.hpp>
 #include <CL/sycl.hpp>
 #include <iostream>
 #include <SYCL/Kokkos_SyclSpace.hpp>
@@ -55,13 +56,13 @@ public:
 
   //static void impl_static_fence();
 
-  static void fence() const;
+  void fence() const;
 
   KOKKOS_INLINE_FUNCTION static size_t concurrency() {
-      return m_device.get_info<sycl::info::device::max_compute_units>();
+      return impl_internal_space_instance()->m_device.get_info<sycl::info::device::max_compute_units>();
   }
 
-  KOKKOS_INLINE_FUNCTION static const char* name() { return "SYCL" };
+  KOKKOS_INLINE_FUNCTION static const char* name() { return "SYCL" ;};
 
   static void impl_initialize();
 
