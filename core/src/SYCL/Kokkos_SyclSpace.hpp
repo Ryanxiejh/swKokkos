@@ -6,9 +6,9 @@
 #define KOKKOS_KOKKOS_SYCLSPACE_HPP
 
 #if defined(KOKKOS_ENABLE_SYCL)
+#include <Kokkos_Core_fwd.hpp>
 #include <SYCL/Kokkos_SYCL.hpp>
 #include <Kokkos_Macros.hpp>
-#include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_Concepts.hpp>
 #include <impl/Kokkos_SharedAlloc.hpp>
 #include <Kokkos_HostSpace.hpp>
@@ -89,41 +89,20 @@ struct DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, Kokkos::SYCL> {
 
 template <class ExecutionSpace>
 struct DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, ExecutionSpace> {
-  inline DeepCopy(void* dst, const void* src, size_t n) {
-    (void)DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, Kokkos::SYCL>(dst, src, n);
-  }
-
-  inline DeepCopy(const ExecutionSpace& exec, void* dst, const void* src, size_t n) {
-    exec.fence();
-    DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, Kokkos::SYCL>(Kokkos::SYCL(), dst, src, n);
-    Kokkos::SYCL().fence();
-  }
+  DeepCopy(void* dst, const void* src, size_t n);
+  DeepCopy(const ExecutionSpace& exec, void* dst, const void* src, size_t n);
 };
 
 template <class ExecutionSpace>
 struct DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, ExecutionSpace> {
-  inline DeepCopy(void* dst, const void* src, size_t n) {
-    (void)DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, Kokkos::SYCL>(dst, src, n);
-  }
-
-  inline DeepCopy(const ExecutionSpace& exec, void* dst, const void* src, size_t n) {
-    exec.fence();
-    DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, Kokkos::SYCL>(Kokkos::SYCL(), dst, src, n);
-    Kokkos::SYCL().fence();
-  }
+  DeepCopy(void* dst, const void* src, size_t n);
+  DeepCopy(const ExecutionSpace& exec, void* dst, const void* src, size_t n);
 };
 
 template <class ExecutionSpace>
 struct DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, ExecutionSpace> {
-  inline DeepCopy(void* dst, const void* src, size_t n) {
-    (void)DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, Kokkos::SYCL>(dst, src, n);
-  }
-
-  inline DeepCopy(const ExecutionSpace& exec, void* dst, const void* src, size_t n) {
-    exec.fence();
-    DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, Kokkos::SYCL>(Kokkos::SYCL(), dst, src, n);
-    Kokkos::SYCL().fence();
-  }
+  DeepCopy(void* dst, const void* src, size_t n);
+  DeepCopy(const ExecutionSpace& exec, void* dst, const void* src, size_t n);
 };
 /*--------------------------------------------------------------------------*/
 

@@ -78,6 +78,44 @@ DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, Kokkos::SYCL>::DeepCopy(
   USM_memcpy(dst, src, n);
 }
 
+template <class ExecutionSpace>
+DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, ExecutionSpace>::DeepCopy(void* dst, const void* src, size_t n) {
+    (void)DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, Kokkos::SYCL>(dst, src, n);
+}
+
+template <class ExecutionSpace>
+DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, ExecutionSpace>::DeepCopy(
+        const ExecutionSpace& exec, void* dst, const void* src, size_t n) {
+    exec.fence();
+    DeepCopy<Kokkos::SyclSpace, Kokkos::SyclSpace, Kokkos::SYCL>(Kokkos::SYCL(), dst, src, n);
+    Kokkos::SYCL().fence();
+}
+
+template <class ExecutionSpace>
+DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, ExecutionSpace>::DeepCopy(void* dst, const void* src, size_t n) {
+    (void)DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, Kokkos::SYCL>(dst, src, n);
+}
+
+template <class ExecutionSpace>
+DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, ExecutionSpace>::DeepCopy(
+        const ExecutionSpace& exec, void* dst, const void* src, size_t n) {
+    exec.fence();
+    DeepCopy<Kokkos::HostSpace, Kokkos::SyclSpace, Kokkos::SYCL>(Kokkos::SYCL(), dst, src, n);
+    Kokkos::SYCL().fence();
+}
+
+template <class ExecutionSpace>
+DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, ExecutionSpace>::DeepCopy(void* dst, const void* src, size_t n) {
+    (void)DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, Kokkos::SYCL>(dst, src, n);
+}
+
+template <class ExecutionSpace>
+DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, ExecutionSpace>::DeepCopy(
+        const ExecutionSpace& exec, void* dst, const void* src, size_t n) {
+    exec.fence();
+    DeepCopy<Kokkos::SyclSpace, Kokkos::HostSpace, Kokkos::SYCL>(Kokkos::SYCL(), dst, src, n);
+    Kokkos::SYCL().fence();
+}
 /*--------------------------------------------------------------------------*/
 
 
