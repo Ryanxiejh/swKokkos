@@ -8,6 +8,7 @@
 #if defined(KOKKOS_ENABLE_SYCL)
 
 #include <Kokkos_Macros.hpp>
+#include <Kokkos_Core_fwd.hpp>
 #include <CL/sycl.hpp>
 #include <iostream>
 #include <SYCL/Kokkos_SyclSpace.hpp>
@@ -52,11 +53,42 @@ public:
       return 1;
   }
 
-  static void impl_static_fence();
+  //static void impl_static_fence();
 
-  void fence() const;
+  static void fence() const;
 
-  static int concurrency();
+  KOKKOS_INLINE_FUNCTION static size_t concurrency() {
+      return m_device.get_info<sycl::info::device::max_compute_units>();
+  }
 
-  static const char* name();
+  KOKKOS_INLINE_FUNCTION static const char* name() { return "SYCL" };
+
+  static void impl_initialize();
+
+  static void impl_finalize();
+
+  KOKKOS_INLINE_FUNCTION Impl::SYCLInternal* impl_internal_space_instance() const {
+    return m_space_instance;
+  }
+
+  int sycl_device() const;
+
+private:
+    Impl::SYCLInternal* m_space_instance;
 };
+
+namespace Profiling {
+namespace Experimental {
+template <>
+struct DeviceTypeTraits<SYCL> {
+  static constexpr DeviceType id = DeviceType::SYCL;
+};
+}  // namespace Experimental
+}  // namespace Profiling
+} //namespace Kokkos
+
+#include <SYCL/Kokkos_SyclSpace.hpp>
+#include <SYCL/Kokkos_SYCL_Instance.hpp>
+#include <SYCL/Kokkos_SYCL_Parallel.hpp>
+#endif //#if defined(KOKKOS_ENABLE_SYCL)
+#endif //KOKKOS_KOKKOS_SWTHREAD_HPP

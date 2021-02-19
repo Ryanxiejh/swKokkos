@@ -546,6 +546,7 @@ void CudaInternal::initialize(int cuda_device_id, cudaStream_t stream) {
 
   m_stream = stream;
 }
+}
 
 //----------------------------------------------------------------------------
 

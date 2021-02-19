@@ -106,8 +106,13 @@ class HPX;  ///< Execution space with HPX back-end.
 #endif
 
 //Ryanxiejh 2021/2/4
-#if defined(KOKKOS_ENABLE_THREADS)
+#if defined(KOKKOS_ENABLE_SWTHREAD)
     class SwThread;  ///< Execution space with SwThread back-end.
+#endif
+
+//Ryanxiejh 2021/2/19
+#if defined(KOKKOS_ENABLE_SYCL)
+    class SYCL;  ///< Execution space with SwThread back-end.
 #endif
 
 #if defined(KOKKOS_ENABLE_THREADS)
@@ -164,10 +169,14 @@ typedef Experimental::OpenMPTarget DefaultExecutionSpace;
 typedef Experimental::HIP DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_ROCM)
 typedef Experimental::ROCm DefaultExecutionSpace;
+#elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_SYCL)
+typedef SYCL DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_OPENMP)
 typedef OpenMP DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_THREADS)
 typedef Threads DefaultExecutionSpace;
+#elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_SWTHREAD)
+    typedef SwThread DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_HPX)
 typedef Kokkos::Experimental::HPX DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_SERIAL)
@@ -216,6 +225,8 @@ typedef Kokkos::CudaSpace ActiveExecutionMemorySpace;
 typedef Kokkos::HostSpace ActiveExecutionMemorySpace;
 #elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_HIP_GPU)
 typedef Kokkos::Experimental::HIPSpace ActiveExecutionMemorySpace;
+#elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_SYCL)
+typedef Kokkos::SyclSpace ActiveExecutionMemorySpace;
 #elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_HOST)
 typedef Kokkos::HostSpace ActiveExecutionMemorySpace;
 #else
