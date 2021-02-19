@@ -386,6 +386,11 @@ void initialize_backends(const InitArguments& args) {
               << std::endl;
   }
 #endif
+
+//Ryanxiejh
+#if defined(KOKKOS_ENABLE_SYCL)
+    Kokkos::SYCL::impl_initialize();
+#endif
 }
 
 void initialize_profiling(const InitArguments&) {
