@@ -66,6 +66,7 @@ int SYCLInternal::verify_is_initialized(const char* const label) const {
 
 void SYCLInternal::finalize() {
   //SYCL().fence();
+  m_queue.wait();
   was_finalized = 1;
   if (nullptr != m_scratchSpace || nullptr != m_scratchFlags) {
     // FIXME_SYCL
