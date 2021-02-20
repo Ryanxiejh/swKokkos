@@ -145,6 +145,8 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>::
           sizeof(SharedAllocationHeader) + arg_alloc_size, arg_dealloc),
       m_space(arg_space) {
 
+    std::cout << "4444444444444444444444444444444444" << std::endl;
+
 //#if defined(KOKKOS_ENABLE_PROFILING)
 //  if (Kokkos::Profiling::profileLibraryLoaded()) {
 //    Kokkos::Profiling::allocateData(

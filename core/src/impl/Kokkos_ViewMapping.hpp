@@ -56,6 +56,7 @@
 #include <impl/Kokkos_Traits.hpp>
 #include <impl/Kokkos_ViewCtor.hpp>
 #include <impl/Kokkos_Atomic_View.hpp>
+#include <iostream>
 #if defined(KOKKOS_ENABLE_PROFILING)
 #include <impl/Kokkos_Profiling_Interface.hpp>
 #endif
@@ -3165,6 +3166,8 @@ class ViewMapping<
     const size_t alloc_size =
         (m_impl_offset.span() * MemorySpanSize + MemorySpanMask) &
         ~size_t(MemorySpanMask);
+
+      std::cout << "viewMapping::allocate_shared called!" << std::endl;
 
     // Create shared memory tracking record with allocate memory from the memory
     // space
