@@ -13,7 +13,7 @@ SYCL::SYCL() : m_space_instance(&Impl::SYCLInternal::singleton()) {
 void SYCL::fence() const { m_space_instance->m_queue->wait(); }
 
 void SYCL::impl_initialize() {
-  sycl::device device{sycl::default_selector};
+  sycl::device device{sycl::default_selector()};
   Impl::SYCLInternal::singleton().initialize(device);
 }
 
