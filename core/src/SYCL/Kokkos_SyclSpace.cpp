@@ -7,6 +7,7 @@
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
 #include <impl/Kokkos_MemorySpace.hpp>
 #include <impl/Kokkos_Profiling_Interface.hpp>
+#include <iostream>
 
 namespace Kokkos{
 
@@ -14,9 +15,7 @@ SyclSpace::SyclSpace() : m_device(SYCL().sycl_device()) {}
 
 void* SyclSpace::allocate(const size_t arg_alloc_size) const {
 
-  //const sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
-
-  const sycl::queue queue;
+  const sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
 
   void* const m_Ptr = sycl::malloc_device(arg_alloc_size, queue);
 
@@ -163,6 +162,8 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>::
   // Set last element zero, in case c_str is too long
   header.m_label[SharedAllocationHeader::maximum_label_length - 1] = (char)0;
 
+  std::cout << "2222222222222222222222222222" << std::endl;
+
   // Copy to device memory
   Kokkos::Impl::DeepCopy<Kokkos::SyclSpace, HostSpace>(
       RecordBase::m_alloc_ptr, &header, sizeof(SharedAllocationHeader));
@@ -182,6 +183,7 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>
         *SharedAllocationRecord<Kokkos::SyclSpace, void>::allocate(
                 const Kokkos::SyclSpace& arg_space, const std::string& arg_label,
                 const size_t arg_alloc_size) {
+    std::cout << "111111111111111111111111111" << std::endl;
   return new SharedAllocationRecord(arg_space, arg_label, arg_alloc_size);
 }
 
