@@ -3195,20 +3195,20 @@ class ViewMapping<
       // Assume destruction is only required when construction is requested.
       // The ViewValueFunctor has both value construction and destruction
       // operators.
-        //std::cout << "33333" << std::endl;
+        std::cout << "33333" << std::endl;
 
       record->m_destroy = functor_type(
           ((Kokkos::Impl::ViewCtorProp<void, execution_space> const&)arg_prop)
               .value,
           (value_type*)m_impl_handle, m_impl_offset.span());
 
-        //std::cout << "44444" << std::endl;
+        std::cout << "44444" << std::endl;
 
       // Construct values
       record->m_destroy.construct_shared_allocation();
     }
 
-      //std::cout << "viewMapping::allocate_shared called success!" << std::endl;
+      std::cout << "viewMapping::allocate_shared called success!" << std::endl;
 
     return record;
   }
