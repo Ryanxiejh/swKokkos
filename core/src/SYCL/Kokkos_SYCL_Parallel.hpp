@@ -71,7 +71,7 @@ class ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>, Kokkos::SYCL> {
     const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
     auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
     new (usm_functor_ptr) FunctorType(m_functor);
-    sycl_direct_launch(m_policy,std::reference_wrapper(*(reinterpret_cast<FunctorType>(usm_functor_ptr))));
+    sycl_direct_launch(m_policy,std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr))));
     sycl::free(usm_functor_ptr,queue);
   }
 
