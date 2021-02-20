@@ -39,6 +39,8 @@ public:
   /**\brief Return Name of the MemorySpace */
   static constexpr const char* name() { return "SyclUSMSpace"; }
 
+private:
+    int m_device;
 };
 
 namespace Impl{

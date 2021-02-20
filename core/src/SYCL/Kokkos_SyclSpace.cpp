@@ -18,8 +18,6 @@ void* SyclSpace::allocate(const size_t arg_alloc_size) const {
 
   void* const m_Ptr = sycl::malloc_device(arg_alloc_size, queue);
 
-  queue.wait();
-
   if (m_Ptr == nullptr){
     const std::string msg(
         "SYCL usm allocate ERROR");
@@ -29,9 +27,9 @@ void* SyclSpace::allocate(const size_t arg_alloc_size) const {
   return m_Ptr;
 }
 
-void SyclSpace::impl_deallocate(void* const arg_alloc_ptr, const size_t arg_alloc_size) const {
+void SyclSpace::deallocate(void* const arg_alloc_ptr, const size_t arg_alloc_size) const {
 
-  const sycl::queue queue{SYCL().impl_internal_space_instance().m_device};
+    const sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
 
   sycl::free(arg_alloc_ptr, queue);
 }
@@ -40,13 +38,14 @@ namespace Impl{
 /*--------------------------------------------------------------------------*/
 namespace {
 void USM_memcpy(Kokkos::Impl::SYCLInternal& space, void* dst, const void* src, size_t n) {
-  (void)USM_memcpy(*(space.m_queue), dst, src, n);
-  queue.wait();
+    sycl::queue& queue = *(space->m_queue);
+    auto event = queue.memcpy(dst, src, n);
+    event.wait();
 }
 
 void USM_memcpy(void* dst, const void* src, size_t n) {
   Kokkos::Impl::SYCLInternal::singleton().m_queue->wait();
-  const sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
+  sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
   auto event = queue.memcpy(dst, src, n);
   event.wait();
 }
@@ -142,14 +141,14 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>::
                                   void>::s_root_record,
 #endif
           Kokkos::Impl::checked_allocation_with_header(arg_space, arg_label, arg_alloc_size),
-          sizeof(SharedAllocationHeader) + arg_size, arg_dealloc),
+          sizeof(SharedAllocationHeader) + arg_alloc_size, arg_dealloc),
       m_space(arg_space) {
 
 #if defined(KOKKOS_ENABLE_PROFILING)
   if (Kokkos::Profiling::profileLibraryLoaded()) {
     Kokkos::Profiling::allocateData(
-        Kokkos::Profiling::make_space_handle(arg_space.name()), arg_label, data(),
-        arg_size);
+        Kokkos::Profiling::SpaceHandle(arg_space.name()), arg_label, data(),
+        arg_alloc_size);
   }
 #endif
   SharedAllocationHeader header;
@@ -198,7 +197,7 @@ SharedAllocationRecord<Kokkos::SyclSpace,
             &header, RecordBase::m_alloc_ptr, sizeof(SharedAllocationHeader));
 
     Kokkos::Profiling::deallocateData(
-        Kokkos::Profiling::make_space_handle(
+        Kokkos::Profiling::SpaceHandle(
             Kokkos::SyclSpace::name()), header.m_label, data(), size());
   }
 #endif
