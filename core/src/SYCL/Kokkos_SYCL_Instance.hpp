@@ -12,6 +12,7 @@
 #include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_Macros.hpp>
 #include <CL/sycl.hpp>
+#include <SYCL/Kokkos_SYCL_Instance.hpp>
 #include <Kokkos_Concepts.hpp>
 #include <SYCL/Kokkos_SYCL.hpp>
 #include <impl/Kokkos_Error.hpp>
