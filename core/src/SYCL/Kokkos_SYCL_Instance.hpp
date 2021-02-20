@@ -43,7 +43,6 @@ public:
     size_type* m_scratchSpace = nullptr;
     size_type* m_scratchFlags = nullptr;
     std::unique_ptr<sycl::queue> m_queue;
-    //sycl::queue m_queue;
 };
 
 }  //namespace Impl

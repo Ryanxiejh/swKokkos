@@ -16,6 +16,7 @@
 #include <KokkosExp_MDRangePolicy.hpp>
 #include <Kokkos_Parallel_Reduce.hpp>
 #include <iostream>
+#include <functional>
 
 namespace Kokkos{
 namespace Impl{
@@ -67,6 +68,10 @@ class ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>, Kokkos::SYCL> {
   // Indirectly launch a functor by explicitly creating it in USM shared memory
   void sycl_indirect_launch() const {
     std::cout << "sycl_indirect_launch !!!" << std::endl;
+    const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
+    auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
+    new (usm_functor_ptr) FunctorType(m_functor);
+    sycl_direct_launch(m_policy,std::reference_wrapper(*usm_functor_ptr));
   }
 
  public:
