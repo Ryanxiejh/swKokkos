@@ -2,6 +2,11 @@
 // Created by Ryanxiejh on 2021/2/19.
 //
 #include <SYCL/Kokkos_SyclSpace.hpp>
+#include <Kokkos_HostSpace.hpp>
+#include <SYCL/Kokkos_SYCL.hpp>
+#include <SYCL/Kokkos_SYCL_Instance.hpp>
+#include <impl/Kokkos_MemorySpace.hpp>
+#include <impl/Kokkos_Profiling_Interface.hpp>
 
 namespace Kokkos{
 

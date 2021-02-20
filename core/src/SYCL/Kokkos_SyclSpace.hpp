@@ -8,12 +8,9 @@
 #include <Kokkos_Macros.hpp>
 #if defined(KOKKOS_ENABLE_SYCL)
 #include <Kokkos_Core_fwd.hpp>
-#include <SYCL/Kokkos_SYCL.hpp>
 #include <Kokkos_Concepts.hpp>
-#include <impl/Kokkos_SharedAlloc.hpp>
-#include <Kokkos_HostSpace.hpp>
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
-#include <impl/Kokkos_MemorySpace.hpp>
+#include <impl/Kokkos_SharedAlloc.hpp>
 #include <impl/Kokkos_Profiling_Interface.hpp>
 
 namespace Kokkos{
