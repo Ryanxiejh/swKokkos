@@ -5,10 +5,10 @@
 #ifndef KOKKOS_KOKKOS_SYCL_INSTANCE_HPP
 #define KOKKOS_KOKKOS_SYCL_INSTANCE_HPP
 
+#include <Kokkos_Macros.hpp>
 #if defined(KOKKOS_ENABLE_SYCL)
 
 #include <memory>
-#include <Kokkos_Macros.hpp>
 #include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_Macros.hpp>
 #include <CL/sycl.hpp>
