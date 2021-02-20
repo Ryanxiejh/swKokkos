@@ -3205,7 +3205,7 @@ class ViewMapping<
         std::cout << "44444" << std::endl;
 
       // Construct values
-      record->m_destroy.construct_shared_allocation();
+      //record->m_destroy.construct_shared_allocation();
     }
 
       std::cout << "viewMapping::allocate_shared called success!" << std::endl;
