@@ -215,6 +215,8 @@ void* SharedAllocationRecord<Kokkos::SyclSpace, void>::allocate_tracked(
         const size_t arg_alloc_size) {
   if (!arg_alloc_size) return (void *)0;
 
+    std::cout << "3333333333333333333333333333333333333" << std::endl;
+
   SharedAllocationRecord* const r =
       allocate(arg_space, arg_alloc_label, arg_alloc_size);
 
