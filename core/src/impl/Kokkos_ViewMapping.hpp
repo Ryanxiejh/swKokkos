@@ -3176,7 +3176,7 @@ class ViewMapping<
         ((Kokkos::Impl::ViewCtorProp<void, std::string> const&)arg_prop).value,
         alloc_size);
 
-      //std::cout << "11111" << std::endl;
+      std::cout << "11111" << std::endl;
 
 #ifdef KOKKOS_ENABLE_DEPRECATED_CODE
     if (alloc_size) {
@@ -3187,7 +3187,7 @@ class ViewMapping<
     }
 #endif
 
-      //std::cout << "22222" << std::endl;
+      std::cout << "22222" << std::endl;
 
     //  Only initialize if the allocation is non-zero.
     //  May be zero if one of the dimensions is zero.
