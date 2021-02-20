@@ -38,7 +38,7 @@ namespace Impl{
 /*--------------------------------------------------------------------------*/
 namespace {
 void USM_memcpy(Kokkos::Impl::SYCLInternal& space, void* dst, const void* src, size_t n) {
-    sycl::queue& queue = *(space->m_queue);
+    sycl::queue& queue = *(space.m_queue);
     auto event = queue.memcpy(dst, src, n);
     event.wait();
 }
