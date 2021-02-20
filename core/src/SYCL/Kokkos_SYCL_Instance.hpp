@@ -10,6 +10,11 @@
 
 #include <memory>
 #include <CL/sycl.hpp>
+#include <Kokkos_Concepts.hpp>
+#include <SYCL/Kokkos_SYCL.hpp>
+#include <Kokkos_HostSpace.hpp>
+#include <Kokkos_Serial.hpp>
+#include <impl/Kokkos_Error.hpp>
 
 namespace Kokkos{
 namespace Impl{
