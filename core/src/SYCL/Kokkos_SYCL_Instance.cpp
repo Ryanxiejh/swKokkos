@@ -1,7 +1,6 @@
 //
 // Created by Ryanxiejh on 2021/2/19.
 //
-#if defined(KOKKOS_ENABLE_SYCL)
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
 
 namespace Kokkos{
@@ -78,5 +77,4 @@ void SYCLInternal::finalize() {
 }   // namespace Impl
 }   // namespace Kokkos
 
-#endif //#if defined(KOKKOS_ENABLE_SYCL)
 

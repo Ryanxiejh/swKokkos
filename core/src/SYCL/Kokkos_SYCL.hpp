@@ -95,4 +95,4 @@ struct DeviceTypeTraits<SYCL> {
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
 #include <SYCL/Kokkos_SYCL_Parallel.hpp>
 #endif //#if defined(KOKKOS_ENABLE_SYCL)
-#endif //KOKKOS_KOKKOS_SWTHREAD_HPP
+#endif //KOKKOS_KOKKOS_SYCL_HPP

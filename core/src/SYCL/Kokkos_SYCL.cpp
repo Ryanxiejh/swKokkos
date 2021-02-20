@@ -1,7 +1,6 @@
 //
 // Created by Ryanxiejh on 2021/2/19.
 //
-#if defined(KOKKOS_ENABLE_SYCL)
 #include <SYCL/Kokkos_SYCL.hpp>
 
 namespace Kokkos{
@@ -29,5 +28,3 @@ int SYCL::sycl_device() const {
 }
 
 } //namespace Kokkos
-
-#endif //#if defined(KOKKOS_ENABLE_SYCL)
