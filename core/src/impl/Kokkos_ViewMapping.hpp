@@ -3176,7 +3176,7 @@ class ViewMapping<
         ((Kokkos::Impl::ViewCtorProp<void, std::string> const&)arg_prop).value,
         alloc_size);
 
-      std::cout << "viewMapping::allocate_shared called success!" << std::endl;
+      std::cout << "11111" << std::endl;
 
 #ifdef KOKKOS_ENABLE_DEPRECATED_CODE
     if (alloc_size) {
@@ -3187,20 +3187,28 @@ class ViewMapping<
     }
 #endif
 
+      std::cout << "22222" << std::endl;
+
     //  Only initialize if the allocation is non-zero.
     //  May be zero if one of the dimensions is zero.
     if (alloc_size && alloc_prop::initialize) {
       // Assume destruction is only required when construction is requested.
       // The ViewValueFunctor has both value construction and destruction
       // operators.
+        std::cout << "33333" << std::endl;
+
       record->m_destroy = functor_type(
           ((Kokkos::Impl::ViewCtorProp<void, execution_space> const&)arg_prop)
               .value,
           (value_type*)m_impl_handle, m_impl_offset.span());
 
+        std::cout << "44444" << std::endl;
+
       // Construct values
       record->m_destroy.construct_shared_allocation();
     }
+
+      std::cout << "viewMapping::allocate_shared called success!" << std::endl;
 
     return record;
   }
