@@ -2,6 +2,10 @@
 // Created by Ryanxiejh on 2021/2/19.
 //
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
+#include <Kokkos_Concepts.hpp>
+#include <Kokkos_HostSpace.hpp>
+#include <Kokkos_Serial.hpp>
+#include <impl/Kokkos_Error.hpp>
 
 namespace Kokkos{
 namespace Impl{
@@ -66,7 +70,7 @@ int SYCLInternal::verify_is_initialized(const char* const label) const {
 
 void SYCLInternal::finalize() {
   //SYCL().fence();
-  m_queue.wait();
+  m_queue->wait();
   was_finalized = 1;
   if (nullptr != m_scratchSpace || nullptr != m_scratchFlags) {
     // FIXME_SYCL
