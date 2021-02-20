@@ -3178,14 +3178,14 @@ class ViewMapping<
 
       std::cout << "11111" << std::endl;
 
-//#ifdef KOKKOS_ENABLE_DEPRECATED_CODE
-//    if (alloc_size) {
-//#endif
-//      m_impl_handle =
-//          handle_type(reinterpret_cast<pointer_type>(record->data()));
-//#ifdef KOKKOS_ENABLE_DEPRECATED_CODE
-//    }
-//#endif
+#ifdef KOKKOS_ENABLE_DEPRECATED_CODE
+    if (alloc_size) {
+#endif
+      m_impl_handle =
+          handle_type(reinterpret_cast<pointer_type>(record->data()));
+#ifdef KOKKOS_ENABLE_DEPRECATED_CODE
+    }
+#endif
 
       std::cout << "22222" << std::endl;
 
