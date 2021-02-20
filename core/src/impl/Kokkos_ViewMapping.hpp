@@ -3176,6 +3176,8 @@ class ViewMapping<
         ((Kokkos::Impl::ViewCtorProp<void, std::string> const&)arg_prop).value,
         alloc_size);
 
+      std::cout << "viewMapping::allocate_shared called success!" << std::endl;
+
 #ifdef KOKKOS_ENABLE_DEPRECATED_CODE
     if (alloc_size) {
 #endif
