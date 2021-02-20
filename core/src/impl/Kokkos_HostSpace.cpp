@@ -47,6 +47,7 @@
 #include <Kokkos_Macros.hpp>
 #include <impl/Kokkos_Error.hpp>
 #include <impl/Kokkos_MemorySpace.hpp>
+#include <iostream>
 #if defined(KOKKOS_ENABLE_PROFILING)
 #include <impl/Kokkos_Profiling_Interface.hpp>
 #endif
@@ -382,6 +383,9 @@ SharedAllocationRecord<Kokkos::HostSpace, void>::SharedAllocationRecord(
                                                arg_alloc_size),
           sizeof(SharedAllocationHeader) + arg_alloc_size, arg_dealloc),
       m_space(arg_space) {
+
+    std::cout << "hostspace SharedAllocationRecord called!" << std::endl;
+
 #if defined(KOKKOS_ENABLE_PROFILING)
   if (Kokkos::Profiling::profileLibraryLoaded()) {
     Kokkos::Profiling::allocateData(
