@@ -170,8 +170,8 @@ typedef Experimental::OpenMPTarget DefaultExecutionSpace;
 typedef Experimental::HIP DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_ROCM)
 typedef Experimental::ROCm DefaultExecutionSpace;
-#elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_SYCL)
-typedef SYCL DefaultExecutionSpace;
+//#elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_SYCL)
+//typedef SYCL DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_OPENMP)
 typedef OpenMP DefaultExecutionSpace;
 #elif defined(KOKKOS_ENABLE_DEFAULT_DEVICE_TYPE_THREADS)
@@ -226,8 +226,8 @@ typedef Kokkos::CudaSpace ActiveExecutionMemorySpace;
 typedef Kokkos::HostSpace ActiveExecutionMemorySpace;
 #elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_HIP_GPU)
 typedef Kokkos::Experimental::HIPSpace ActiveExecutionMemorySpace;
-#elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_SYCL)
-typedef Kokkos::SyclSpace ActiveExecutionMemorySpace;
+//#elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_SYCL)
+//typedef Kokkos::SyclSpace ActiveExecutionMemorySpace;
 #elif defined(KOKKOS_ACTIVE_EXECUTION_MEMORY_SPACE_HOST)
 typedef Kokkos::HostSpace ActiveExecutionMemorySpace;
 #else
