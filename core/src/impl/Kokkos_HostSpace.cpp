@@ -384,7 +384,7 @@ SharedAllocationRecord<Kokkos::HostSpace, void>::SharedAllocationRecord(
           sizeof(SharedAllocationHeader) + arg_alloc_size, arg_dealloc),
       m_space(arg_space) {
 
-    std::cout << "hostspace SharedAllocationRecord called!" << std::endl;
+    //std::cout << "hostspace SharedAllocationRecord called!" << std::endl;
 
 #if defined(KOKKOS_ENABLE_PROFILING)
   if (Kokkos::Profiling::profileLibraryLoaded()) {
