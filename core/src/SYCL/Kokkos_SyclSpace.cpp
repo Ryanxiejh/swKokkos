@@ -14,7 +14,9 @@ SyclSpace::SyclSpace() : m_device(SYCL().sycl_device()) {}
 
 void* SyclSpace::allocate(const size_t arg_alloc_size) const {
 
-  const sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
+  //const sycl::queue& queue = *(SYCL().impl_internal_space_instance()->m_queue);
+
+  const sycl::queue& queue;
 
   void* const m_Ptr = sycl::malloc_device(arg_alloc_size, queue);
 
