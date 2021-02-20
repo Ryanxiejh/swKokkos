@@ -49,6 +49,7 @@
 #include <string>
 #include <algorithm>
 #include <initializer_list>
+#include <iostream>
 
 #include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_HostSpace.hpp>
@@ -1938,6 +1939,9 @@ class View : public ViewTraits<DataType, Properties...> {
                               typename traits::array_layout>::type const&
           arg_layout)
       : m_track(), m_map() {
+
+      std::cout << "view constructor called!" << std::endl;
+
     // Append layout and spaces if not input
     typedef Impl::ViewCtorProp<P...> alloc_prop_input;
 
