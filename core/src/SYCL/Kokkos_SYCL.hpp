@@ -10,7 +10,7 @@
 
 #include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_Core.hpp>
-#include <SYCL/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <iostream>
 #include <SYCL/Kokkos_SyclSpace.hpp>
 #include <Kokkos_Layout.hpp>
