@@ -145,15 +145,15 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>::
           sizeof(SharedAllocationHeader) + arg_alloc_size, arg_dealloc),
       m_space(arg_space) {
 
-    std::cout << "4444444444444444444444444444444444" << std::endl;
+    //std::cout << "4444444444444444444444444444444444" << std::endl;
 
-//#if defined(KOKKOS_ENABLE_PROFILING)
-//  if (Kokkos::Profiling::profileLibraryLoaded()) {
-//    Kokkos::Profiling::allocateData(
-//        Kokkos::Profiling::SpaceHandle(arg_space.name()), arg_label, data(),
-//        arg_alloc_size);
-//  }
-//#endif
+#if defined(KOKKOS_ENABLE_PROFILING)
+  if (Kokkos::Profiling::profileLibraryLoaded()) {
+    Kokkos::Profiling::allocateData(
+        Kokkos::Profiling::SpaceHandle(arg_space.name()), arg_label, data(),
+        arg_alloc_size);
+  }
+#endif
   SharedAllocationHeader header;
 
   // Fill in the Header information
@@ -164,7 +164,7 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>::
   // Set last element zero, in case c_str is too long
   header.m_label[SharedAllocationHeader::maximum_label_length - 1] = (char)0;
 
-  std::cout << "2222222222222222222222222222" << std::endl;
+  //std::cout << "2222222222222222222222222222" << std::endl;
 
   // Copy to device memory
   Kokkos::Impl::DeepCopy<Kokkos::SyclSpace, HostSpace>(
@@ -185,7 +185,7 @@ SharedAllocationRecord<Kokkos::SyclSpace, void>
         *SharedAllocationRecord<Kokkos::SyclSpace, void>::allocate(
                 const Kokkos::SyclSpace& arg_space, const std::string& arg_label,
                 const size_t arg_alloc_size) {
-    std::cout << "111111111111111111111111111" << std::endl;
+    //std::cout << "111111111111111111111111111" << std::endl;
   return new SharedAllocationRecord(arg_space, arg_label, arg_alloc_size);
 }
 
@@ -196,17 +196,17 @@ void SharedAllocationRecord<Kokkos::SyclSpace, void>::deallocate(
 
 SharedAllocationRecord<Kokkos::SyclSpace,
                        void>::~SharedAllocationRecord() {
-//#if defined(KOKKOS_ENABLE_PROFILING)
-//  if (Kokkos::Profiling::profileLibraryLoaded()) {
-//    SharedAllocationHeader header;
-//    Kokkos::Impl::DeepCopy<Kokkos::SyclSpace,Kokkos::HostSpace>(
-//            &header, RecordBase::m_alloc_ptr, sizeof(SharedAllocationHeader));
-//
-//    Kokkos::Profiling::deallocateData(
-//        Kokkos::Profiling::SpaceHandle(
-//            Kokkos::SyclSpace::name()), header.m_label, data(), size());
-//  }
-//#endif
+#if defined(KOKKOS_ENABLE_PROFILING)
+  if (Kokkos::Profiling::profileLibraryLoaded()) {
+    SharedAllocationHeader header;
+    Kokkos::Impl::DeepCopy<Kokkos::SyclSpace,Kokkos::HostSpace>(
+            &header, RecordBase::m_alloc_ptr, sizeof(SharedAllocationHeader));
+
+    Kokkos::Profiling::deallocateData(
+        Kokkos::Profiling::SpaceHandle(
+            Kokkos::SyclSpace::name()), header.m_label, data(), size());
+  }
+#endif
 
   m_space.deallocate(SharedAllocationRecord<void, void>::m_alloc_ptr,
                      SharedAllocationRecord<void, void>::m_alloc_size);
@@ -217,7 +217,7 @@ void* SharedAllocationRecord<Kokkos::SyclSpace, void>::allocate_tracked(
         const size_t arg_alloc_size) {
   if (!arg_alloc_size) return (void *)0;
 
-    std::cout << "3333333333333333333333333333333333333" << std::endl;
+    //std::cout << "3333333333333333333333333333333333333" << std::endl;
 
   SharedAllocationRecord* const r =
       allocate(arg_space, arg_alloc_label, arg_alloc_size);

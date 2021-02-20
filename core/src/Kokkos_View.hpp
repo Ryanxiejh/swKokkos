@@ -1940,7 +1940,7 @@ class View : public ViewTraits<DataType, Properties...> {
           arg_layout)
       : m_track(), m_map() {
 
-      std::cout << "view constructor called!" << std::endl;
+      //std::cout << "view constructor called!" << std::endl;
 
     // Append layout and spaces if not input
     typedef Impl::ViewCtorProp<P...> alloc_prop_input;
