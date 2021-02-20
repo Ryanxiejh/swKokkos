@@ -5,8 +5,8 @@
 #ifndef KOKKOS_KOKKOS_SYCL_PARALLEL_HPP
 #define KOKKOS_KOKKOS_SYCL_PARALLEL_HPP
 
-#if defined(KOKKOS_ENABLE_SYCL)
 #include <Kokkos_Macros.hpp>
+#if defined(KOKKOS_ENABLE_SYCL)
 #include <Kokkos_Core_fwd.hpp>
 #include <Kokkos_Core.hpp>
 #include <stdlib.h>

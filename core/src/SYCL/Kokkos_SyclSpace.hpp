@@ -5,10 +5,10 @@
 #ifndef KOKKOS_KOKKOS_SYCLSPACE_HPP
 #define KOKKOS_KOKKOS_SYCLSPACE_HPP
 
+#include <Kokkos_Macros.hpp>
 #if defined(KOKKOS_ENABLE_SYCL)
 #include <Kokkos_Core_fwd.hpp>
 #include <SYCL/Kokkos_SYCL.hpp>
-#include <Kokkos_Macros.hpp>
 #include <Kokkos_Concepts.hpp>
 #include <impl/Kokkos_SharedAlloc.hpp>
 #include <Kokkos_HostSpace.hpp>
