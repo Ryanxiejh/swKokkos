@@ -160,21 +160,21 @@ struct SyclIterateTile<
     //apply_impl<RP::rank, RP, Functor, Tag>(m_func, m_offset, m_tiledims).exec_range();
   }
 
-  template <typename... Args>
-  typename std::enable_if<(sizeof...(Args) == RP::rank &&
-                           std::is_same<Tag, void>::value),
-                          void>::type
-  apply(Args&&... args) const {
-    m_func(args...);
-  }
-
-  template <typename... Args>
-  typename std::enable_if<(sizeof...(Args) == RP::rank &&
-                           !std::is_same<Tag, void>::value),
-                          void>::type
-  apply(Args&&... args) const {
-    m_func(m_tag, args...);
-  }
+//  template <typename... Args>
+//  typename std::enable_if<(sizeof...(Args) == RP::rank &&
+//                           std::is_same<Tag, void>::value),
+//                          void>::type
+//  apply(Args&&... args) const {
+//    m_func(args...);
+//  }
+//
+//  template <typename... Args>
+//  typename std::enable_if<(sizeof...(Args) == RP::rank &&
+//                           !std::is_same<Tag, void>::value),
+//                          void>::type
+//  apply(Args&&... args) const {
+//    m_func(m_tag, args...);
+//  }
 
   RP /*const&*/ m_rp;
   Functor /*const&*/ m_func;
