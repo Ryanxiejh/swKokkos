@@ -139,7 +139,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
       cgh.parallel_for(range, [=](cl::sycl::item<1> item) {
         const typename Policy::index_type id =
             static_cast<typename Policy::index_type>(item.get_linear_id()) + offset;
-         const iterate_type iter(mdr,func);
+         const iterate_type iter(mdr,functor);
          iter(id);
          //functor(id);
           //functor(id);
