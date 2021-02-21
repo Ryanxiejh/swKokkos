@@ -115,7 +115,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
                           // ).set_chunk_size(1) in ctor
 
   //template <typename Functor>
-  /*static*/ void sycl_direct_launch(const Policy& policy, const iterate_type& functor) const{
+  /*static*/ void sycl_direct_launch(const Policy& policy, const iterate_type& functor) /*const*/{
     // Convenience references
     const Kokkos::SYCL& space = policy.space();
     Kokkos::Impl::SYCLInternal& instance = *space.impl_internal_space_instance();
@@ -127,6 +127,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
     const typename Policy::index_type offset = policy.begin();
 
     auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),q);
+    new (usm_functor_ptr) FunctorType(m_functor);
     FunctorType& func = std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr)));
     MDRangePolicy mdr = m_mdr_policy;
 
@@ -148,7 +149,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   }
 
   //在usm中构造functor
-  void sycl_indirect_launch() const {
+  void sycl_indirect_launch() /*const*/ {
     std::cout << "sycl_indirect_launch !!!" << std::endl;
     const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
     auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
@@ -168,7 +169,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   }
 
  public:
-  inline void execute() const {
+  inline void execute() /*const*/ {
     iterate_type functor(m_mdr_policy, m_functor);
     if constexpr (std::is_trivially_copyable_v<decltype(functor)>){
         sycl_direct_launch(m_policy,functor);
