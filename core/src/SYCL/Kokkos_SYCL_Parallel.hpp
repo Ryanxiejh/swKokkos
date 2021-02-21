@@ -167,7 +167,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
         std::cout << "direct_launch !!!" << std::endl;
     }
     else{
-        //sycl_indirect_launch();
+        sycl_indirect_launch();
         std::cout << "sycl_indirect_launch !!!" << std::endl;
     }
   }
