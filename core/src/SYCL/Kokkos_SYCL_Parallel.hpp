@@ -115,7 +115,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
                           // ).set_chunk_size(1) in ctor
 
   //template <typename Functor>
-  /*static*/ void sycl_direct_launch(const Policy& policy, const Functor& functor) /*const*/{
+  /*static*/ void sycl_direct_launch(const Policy& policy, const FunctorType& functor) /*const*/{
     // Convenience references
     const Kokkos::SYCL& space = policy.space();
     Kokkos::Impl::SYCLInternal& instance = *space.impl_internal_space_instance();
