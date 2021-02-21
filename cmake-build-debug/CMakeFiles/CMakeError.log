@@ -6,3 +6,11 @@ Specify --help for usage, or press the help button on the CMake GUI.
 
 
 
+Determining if the CXX compiler works failed with the following output:
+Change Dir: E:/实验室/大数据项目/太湖环境/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):E:/CMake/bin/cmake.exe cmTC_3828a/fast && CMake Error: The source directory "E:/瀹為獙瀹?澶ф暟鎹」鐩?澶箹鐜/swKokkos/kokkos-master/cmake-build-debug/CMakeFiles/CMakeTmp/cmTC_3828a/fast" does not exist.
+Specify --help for usage, or press the help button on the CMake GUI.
+
+
+
