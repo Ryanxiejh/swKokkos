@@ -157,7 +157,7 @@ struct SyclIterateTile<
     // partial tile dims
     const bool full_tile = check_iteration_bounds(m_tiledims, m_offset);
 
-    SyclIterateTile<RP::rank, RP, Functor, Tag>(m_func, m_offset, m_tiledims).exec_range();
+    apply_impl<RP::rank, RP, Functor, Tag>(m_func, m_offset, m_tiledims).exec_range();
   }
 
   template <typename... Args>

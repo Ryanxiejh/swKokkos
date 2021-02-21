@@ -115,16 +115,16 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
                           // ).set_chunk_size(1) in ctor
 
   template <typename Functor>
-  static void sycl_direct_launch(const iterate_type& functor) {
+  static void sycl_direct_launch(const Policy& policy, const iterate_type& functor) {
     // Convenience references
-    const Kokkos::SYCL& space = m_policy.space();
+    const Kokkos::SYCL& space = policy.space();
     Kokkos::Impl::SYCLInternal& instance = *space.impl_internal_space_instance();
     sycl::queue& q = *(instance.m_queue);
 
     q.wait();
 
-    const typename Policy::index_type work_range = m_policy.end() - m_policy.begin();
-    const typename Policy::index_type offset = m_policy.begin();
+    const typename Policy::index_type work_range = policy.end() - policy.begin();
+    const typename Policy::index_type offset = policy.begin();
 
     q.submit([functor, work_range, offset](sycl::handler& cgh) {
       cl::sycl::range<1> range(work_range);
@@ -146,15 +146,15 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
     auto usm_functor_ptr = sycl::malloc_shared(sizeof(iterate_type),queue);
     iterate_type functor(m_mdr_policy,m_functor);
     new (usm_functor_ptr) iterate_type(functor);
-    sycl_direct_launch(std::reference_wrapper(*(static_cast<iterate_type*>(usm_functor_ptr))));
+    sycl_direct_launch(m_policy, std::reference_wrapper(*(static_cast<iterate_type*>(usm_functor_ptr))));
     sycl::free(usm_functor_ptr,queue);
   }
 
  public:
   inline void execute() const {
-    if constexpr (std::is_trivially_copyable_v<decltype(iterate_type)>){
-        iterate_type functor(m_mdr_policy,m_functor);
-        sycl_direct_launch(functor);
+    if constexpr (std::is_trivially_copyable_v<iterate_type>){
+        iterate_type functor(m_mdr_policy, m_functor);
+        sycl_direct_launch(m_policy,functor);
     }
     else
       sycl_indirect_launch();
