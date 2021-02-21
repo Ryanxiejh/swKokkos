@@ -114,7 +114,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   const Policy m_policy;  // construct as RangePolicy( 0, num_tiles
                           // ).set_chunk_size(1) in ctor
 
-  template <typename Functor>
+  //template <typename Functor>
   static void sycl_direct_launch(const Policy& policy, const iterate_type& functor) {
     // Convenience references
     const Kokkos::SYCL& space = policy.space();
