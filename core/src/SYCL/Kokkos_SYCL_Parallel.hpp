@@ -143,6 +143,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
          //const iterate_type iter(mdr,functor);
          functor(id);
          out << "sycl kernel run id: " << id << sycl::endl;
+         out << (functor.m_func.a)(id,0) << " " << (functor.m_func.a)(id,1) << " " << (functor.m_func.a)(id,2) << sycl::endl;
          //functor(id);
           //functor(id);
       });
