@@ -94,7 +94,7 @@ template <typename RP, typename Functor, typename Tag,
           typename ValueType>
 struct SyclIterateTile;
 
-template <typename RP, typename Functor, typename Tag, typename ValueType>
+template <typename RP, typename Functor, typename Tag>
 struct SyclIterateTile<
     RP, Functor, Tag, void/*, typename std::enable_if<is_void_type<ValueType>::value>::type*/> {
   using index_type = typename RP::index_type;
