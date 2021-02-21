@@ -163,7 +163,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   inline void execute() const {
     iterate_type functor(m_mdr_policy, m_functor);
     if constexpr (std::is_trivially_copyable_v<decltype(functor)>){
-        sycl_direct_launch(m_policy,functor);
+        //sycl_direct_launch(m_policy,functor);
         std::cout << "direct_launch !!!" << std::endl;
     }
     else{
