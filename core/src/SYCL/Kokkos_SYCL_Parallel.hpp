@@ -140,7 +140,8 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
         const typename Policy::index_type id =
             static_cast<typename Policy::index_type>(item.get_linear_id()) + offset;
          const iterate_type iter(mdr,func);
-         iter(id);
+         //iter(id);
+         func(id);
           //functor(id);
       });
     });
