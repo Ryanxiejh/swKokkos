@@ -128,6 +128,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
 
     auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),q);
     FunctorType& func = std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr)));
+    MDRangePolicy mdr = m_mdr_policy;
 
     q.submit([=](sycl::handler& cgh) {
       cl::sycl::range<1> range(work_range);
@@ -135,7 +136,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
       cgh.parallel_for(range, [=](cl::sycl::item<1> item) {
         const typename Policy::index_type id =
             static_cast<typename Policy::index_type>(item.get_linear_id()) + offset;
-         const iterate_type iter(m_mdr_policy,func);
+         const iterate_type iter(mdr,func);
          iter(id);
           //functor(id);
       });
