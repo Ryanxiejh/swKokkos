@@ -115,7 +115,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
                           // ).set_chunk_size(1) in ctor
 
   //template <typename Functor>
-  static void sycl_direct_launch(const Policy& policy, const iterate_type& functor) {
+  /*static*/ void sycl_direct_launch(const Policy& policy, const iterate_type& functor) {
     // Convenience references
     const Kokkos::SYCL& space = policy.space();
     Kokkos::Impl::SYCLInternal& instance = *space.impl_internal_space_instance();
@@ -127,7 +127,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
     const typename Policy::index_type offset = policy.begin();
 
     auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),q);
-    FunctorType& func = std::reference_wrapper(*(static_cast<FunctorType*>(usm_iter_ptr)));
+    FunctorType& func = std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr)));
 
     q.submit([=](sycl::handler& cgh) {
       cl::sycl::range<1> range(work_range);
