@@ -100,7 +100,7 @@ struct SyclIterateTile<
   using index_type = typename RP::index_type;
   using point_type = typename RP::point_type;
 
-  using value_type = ValueType;
+  using value_type = void;
 
   /*inline*/ SyclIterateTile(RP const& rp, Functor const& func)
       : m_rp(rp), m_func(func) {}
