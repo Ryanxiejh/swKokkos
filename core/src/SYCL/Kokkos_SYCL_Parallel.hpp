@@ -106,7 +106,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   typedef typename Policy::member_type Member;
 
   typedef typename Kokkos::Impl::SyclIterateTile<
-      MDRangePolicy, FunctorType, typename MDRangePolicy::work_tag, void, true>
+      MDRangePolicy, FunctorType, typename MDRangePolicy::work_tag, void>
       iterate_type;
 
   const FunctorType m_functor;
