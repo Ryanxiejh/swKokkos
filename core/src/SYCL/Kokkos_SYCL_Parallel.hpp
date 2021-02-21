@@ -154,7 +154,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
 //    }
 //    else std::cout << "not trivially_copyable !!!" << std::endl;
 
-    sycl_direct_launch(m_policy, std::reference_wrapper(*(static_cast<iterate_type*>(usm_functor_ptr))));
+    sycl_direct_launch(m_policy, std::reference_wrapper(*(static_cast<iterate_type*>(usm_iter_ptr))));
     sycl::free(usm_functor_ptr,queue);
     sycl::free(usm_iter_ptr,queue);
   }
