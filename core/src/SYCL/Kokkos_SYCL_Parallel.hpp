@@ -130,7 +130,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
 //    new (usm_functor_ptr) FunctorType(m_functor);
 //    FunctorType& func = std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr)));
 
-    MDRangePolicy mdr = m_mdr_policy
+    MDRangePolicy mdr = m_mdr_policy;
 
     std::cout << "work_range： " << work_range << std::endl;
 
