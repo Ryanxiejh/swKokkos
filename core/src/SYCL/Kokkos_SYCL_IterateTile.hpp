@@ -106,27 +106,27 @@ struct SyclIterateTile<
   /*inline*/ SyclIterateTile(RP const& rp, Functor const& func)
       : m_rp(rp), m_func(func) {}
 
-//  inline bool check_iteration_bounds(point_type& partial_tile,
-//                                     point_type& offset) const {
-//    bool is_full_tile = true;
-//
-//    for (int i = 0; i < RP::rank; ++i) {
-//      if ((offset[i] + m_rp.m_tile[i]) <= m_rp.m_upper[i]) {
-//        partial_tile[i] = m_rp.m_tile[i];
-//      } else {
-//        is_full_tile = false;
-//        partial_tile[i] =
-//            (m_rp.m_upper[i] - 1 - offset[i]) == 0
-//                ? 1
-//                : (m_rp.m_upper[i] - m_rp.m_tile[i]) > 0
-//                      ? (m_rp.m_upper[i] - offset[i])
-//                      : (m_rp.m_upper[i] -
-//                         m_rp.m_lower[i]);  // when single tile encloses range
-//      }
-//    }
-//
-//    return is_full_tile;
-//  }  // end check bounds
+  inline bool check_iteration_bounds(point_type& partial_tile,
+                                     point_type& offset) const {
+    bool is_full_tile = true;
+
+    for (int i = 0; i < RP::rank; ++i) {
+      if ((offset[i] + m_rp.m_tile[i]) <= m_rp.m_upper[i]) {
+        partial_tile[i] = m_rp.m_tile[i];
+      } else {
+        is_full_tile = false;
+        partial_tile[i] =
+            (m_rp.m_upper[i] - 1 - offset[i]) == 0
+                ? 1
+                : (m_rp.m_upper[i] - m_rp.m_tile[i]) > 0
+                      ? (m_rp.m_upper[i] - offset[i])
+                      : (m_rp.m_upper[i] -
+                         m_rp.m_lower[i]);  // when single tile encloses range
+      }
+    }
+
+    return is_full_tile;
+  }  // end check bounds
 
 //  template <int Rank>
 //  struct RankTag {
@@ -136,28 +136,28 @@ struct SyclIterateTile<
 
   template <typename IType>
   inline void operator()(IType tile_idx) const {
-//    point_type m_offset;
-//    point_type m_tiledims;
-//
-//    if (RP::outer_direction == RP::Left) {
-//      for (int i = 0; i < RP::rank; ++i) {
-//        m_offset[i] =
-//            (tile_idx % m_rp.m_tile_end[i]) * m_rp.m_tile[i] + m_rp.m_lower[i];
-//        tile_idx /= m_rp.m_tile_end[i];
-//      }
-//    } else {
-//      for (int i = RP::rank - 1; i >= 0; --i) {
-//        m_offset[i] =
-//            (tile_idx % m_rp.m_tile_end[i]) * m_rp.m_tile[i] + m_rp.m_lower[i];
-//        tile_idx /= m_rp.m_tile_end[i];
-//      }
-//    }
-//
-//    // Check if offset+tiledim in bounds - if not, replace tile dims with the
-//    // partial tile dims
-//    const bool full_tile = check_iteration_bounds(m_tiledims, m_offset);
+    point_type m_offset;
+    point_type m_tiledims;
 
-    //apply_impl<RP::rank, RP, Functor, Tag>(m_func, m_offset, m_tiledims).exec_range();
+    if (RP::outer_direction == RP::Left) {
+      for (int i = 0; i < RP::rank; ++i) {
+        m_offset[i] =
+            (tile_idx % m_rp.m_tile_end[i]) * m_rp.m_tile[i] + m_rp.m_lower[i];
+        tile_idx /= m_rp.m_tile_end[i];
+      }
+    } else {
+      for (int i = RP::rank - 1; i >= 0; --i) {
+        m_offset[i] =
+            (tile_idx % m_rp.m_tile_end[i]) * m_rp.m_tile[i] + m_rp.m_lower[i];
+        tile_idx /= m_rp.m_tile_end[i];
+      }
+    }
+
+    // Check if offset+tiledim in bounds - if not, replace tile dims with the
+    // partial tile dims
+    const bool full_tile = check_iteration_bounds(m_tiledims, m_offset);
+
+    apply_impl<RP::rank, RP, Functor, Tag>(m_func, m_offset, m_tiledims).exec_range();
   }
 
 //  template <typename... Args>
