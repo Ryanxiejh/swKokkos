@@ -126,7 +126,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
     const typename Policy::index_type work_range = policy.end() - policy.begin();
     const typename Policy::index_type offset = policy.begin();
 
-    q.submit([functor, work_range, offset](sycl::handler& cgh) {
+    q.submit([=](sycl::handler& cgh) {
       cl::sycl::range<1> range(work_range);
 
       cgh.parallel_for(range, [=](cl::sycl::item<1> item) {
@@ -167,7 +167,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
         std::cout << "indirect_launch !!!" << std::endl;
     }
     else{
-        sycl_indirect_launch();
+        //sycl_indirect_launch();
         std::cout << "sycl_indirect_launch !!!" << std::endl;
     }
   }
