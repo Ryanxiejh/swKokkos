@@ -140,10 +140,11 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
       cgh.parallel_for(range, [=](cl::sycl::item<1> item) {
         const typename Policy::index_type id =
             static_cast<typename Policy::index_type>(item.get_linear_id()) + offset;
-         //const iterate_type iter(mdr,functor);
-         functor(id);
+         const iterate_type iter(mdr,functor);
+         //functor(id);
+         iter(id);
          out << "sycl kernel run id: " << id << sycl::endl;
-         //out << (functor.m_func.a)(id,0) << " " << (functor.m_func.a)(id,1) << " " << (functor.m_func.a)(id,2) << sycl::endl;
+         out << (iter.m_func.a)(id,0) << " " << (iter.m_func.a)(id,1) << " " << (iter.m_func.a)(id,2) << sycl::endl;
       });
     });
 
