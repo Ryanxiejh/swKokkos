@@ -24,7 +24,7 @@ public:
   using memory_space    = SyclSpace;
   using device_type     = Kokkos::Device<execution_space, memory_space>;
 
-  using array_layout = LayoutLeft;
+  using array_layout = LayoutRight;
   using size_type    = memory_space::size_type;
 
   using scratch_memory_space = ScratchMemorySpace<SYCL>;
