@@ -65,7 +65,7 @@ struct apply_impl<2, RP, Functor, Tag> {
     if (RP::inner_direction == RP::Left) {
         for(index_type dim1 = 0; dim1 < m_extent[1]; dim1++){
             for(index_type dim0 = 0; dim0 < m_extent[0]; dim0++){
-                m_func(Tag(),im0,dim1);
+                m_func(Tag(),dim0,dim1);
             }
         }
     }
@@ -90,6 +90,10 @@ struct apply_impl<2, RP, Functor, Tag> {
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
+template <typename RP, typename Functor, typename Tag = void,
+          typename ValueType = void, typename Enable = void>
+struct SyclIterateTile;
+
 template <typename RP, typename Functor, typename Tag, typename ValueType>
 struct SyclIterateTile<
     RP, Functor, Tag, ValueType,
