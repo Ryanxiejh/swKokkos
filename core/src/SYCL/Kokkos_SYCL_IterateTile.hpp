@@ -104,7 +104,7 @@ struct SyclIterateTile<
 
   SyclIterateTile() = default;
   /*inline*/ SyclIterateTile(RP const& rp, Functor const& func)
-      : /*m_rp(rp), */m_func(func) {}
+      : m_rp(rp), m_func(func) {}
 
 //  inline bool check_iteration_bounds(point_type& partial_tile,
 //                                     point_type& offset) const {
@@ -176,8 +176,8 @@ struct SyclIterateTile<
 //    m_func(m_tag, args...);
 //  }
 
-  //const RP m_rp;
-  const Functor m_func;
+  const RP& m_rp;
+  const Functor& m_func;
 //  typename std::conditional<std::is_same<Tag, void>::value, int, Tag>::type
 //      m_tag;
 };
