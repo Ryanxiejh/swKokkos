@@ -103,7 +103,7 @@ struct SyclIterateTile<
 
   using value_type = ValueType;
 
-  inline SyclIterateTile(RP /*const&*/ rp, Functor /*const&*/ func)
+  /*inline*/ SyclIterateTile(RP /*const&*/ rp, Functor /*const&*/ func)
       : m_rp(rp), m_func(func) {}
 
   inline bool check_iteration_bounds(point_type& partial_tile,
@@ -128,11 +128,11 @@ struct SyclIterateTile<
     return is_full_tile;
   }  // end check bounds
 
-  template <int Rank>
-  struct RankTag {
-    typedef RankTag type;
-    enum { value = (int)Rank };
-  };
+//  template <int Rank>
+//  struct RankTag {
+//    typedef RankTag type;
+//    enum { value = (int)Rank };
+//  };
 
   template <typename IType>
   inline void operator()(IType tile_idx) const {
@@ -178,8 +178,8 @@ struct SyclIterateTile<
 
   RP /*const&*/ m_rp;
   Functor /*const&*/ m_func;
-  typename std::conditional<std::is_same<Tag, void>::value, int, Tag>::type
-      m_tag;
+//  typename std::conditional<std::is_same<Tag, void>::value, int, Tag>::type
+//      m_tag;
 };
 
 
