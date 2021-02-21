@@ -104,7 +104,7 @@ struct SyclIterateTile<
 
   SyclIterateTile() = default;
   /*inline*/ SyclIterateTile(RP const& rp, Functor const& func)
-      /*: m_rp(rp), m_func(func) */{}
+      : m_rp(rp), m_func(func) {}
 
 //  inline bool check_iteration_bounds(point_type& partial_tile,
 //                                     point_type& offset) const {
