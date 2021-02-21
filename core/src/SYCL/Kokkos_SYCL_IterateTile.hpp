@@ -175,8 +175,8 @@ struct SyclIterateTile<
 //    m_func(m_tag, args...);
 //  }
 
-  RP const& m_rp;
-  Functor const& m_func;
+  const RP m_rp;
+  const Functor m_func;
 //  typename std::conditional<std::is_same<Tag, void>::value, int, Tag>::type
 //      m_tag;
 };
