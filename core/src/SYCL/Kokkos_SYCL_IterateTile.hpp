@@ -29,7 +29,7 @@ struct apply_impl<2, RP, Functor, void> {
     if (RP::inner_direction == RP::Left) {
         for(index_type dim1 = 0; dim1 < m_extent[1]; dim1++){
             for(index_type dim0 = 0; dim0 < m_extent[0]; dim0++){
-                m_func(dim0+m_offset[0],dim1++m_offset[1]);
+                m_func(dim0+m_offset[0],dim1+m_offset[1]);
             }
         }
     }
@@ -37,7 +37,7 @@ struct apply_impl<2, RP, Functor, void> {
     else {
         for(index_type dim0 = 0; dim0 < m_extent[0]; dim0++){
             for(index_type dim1 = 0; dim1 < m_extent[1]; dim1++){
-                m_func(dim0++m_offset[0],dim1++m_offset[1]);
+                m_func(dim0++m_offset[0],dim1+m_offset[1]);
             }
         }
     }
@@ -73,7 +73,7 @@ struct apply_impl<2, RP, Functor, Tag> {
     else {
         for(index_type dim0 = 0; dim0 < m_extent[0]; dim0++){
             for(index_type dim1 = 0; dim1 < m_extent[1]; dim1++){
-                m_func(Tag(),dim0+m_offset[0],dim1++m_offset[1]);
+                m_func(Tag(),dim0+m_offset[0],dim1+m_offset[1]);
             }
         }
     }
