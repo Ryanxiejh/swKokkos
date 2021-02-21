@@ -114,8 +114,8 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   const Policy m_policy;  // construct as RangePolicy( 0, num_tiles
                           // ).set_chunk_size(1) in ctor
 
-  //template <typename Functor>
-  static void sycl_direct_launch(const Policy& policy, const FunctorType& functor) /*const*/{
+  template <typename Functor>
+  static void sycl_direct_launch(const Policy& policy, const Functor& functor) /*const*/{
     // Convenience references
     const Kokkos::SYCL& space = policy.space();
     Kokkos::Impl::SYCLInternal& instance = *space.impl_internal_space_instance();
@@ -171,10 +171,10 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   }
 
  public:
-  inline void execute() const {
-//    if constexpr (std::is_trivially_copyable_v<decltype(m_functor)>)
-//      sycl_direct_launch(m_policy, m_functor);
-//    else
+   void execute() const {
+    if constexpr (std::is_trivially_copyable_v<decltype(m_functor)>)
+      sycl_direct_launch(m_policy, m_functor);
+    else
       sycl_indirect_launch();
   }
 
