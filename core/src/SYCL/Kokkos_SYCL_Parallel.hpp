@@ -157,14 +157,12 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
   void sycl_indirect_launch() const {
     std::cout << "sycl_indirect_launch !!!" << std::endl;
     const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
-    //auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
+    auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
     auto usm_iter_ptr = sycl::malloc_shared(sizeof(iterate_type),queue);
-    //iterate_type functor(m_mdr_policy,m_functor);
-    //new (usm_functor_ptr) FunctorType(m_functor);
-    new (usm_iter_ptr) iterate_type(m_mdr_policy,m_functor);
-
+    new (usm_functor_ptr) FunctorType(m_functor);
+    new (usm_iter_ptr) iterate_type(m_mdr_policy,*(static_cast<FunctorType*>(usm_functor_ptr)));
     sycl_direct_launch(m_policy, std::reference_wrapper(*(static_cast<iterate_type*>(usm_iter_ptr))));
-    //sycl::free(usm_functor_ptr,queue);
+    sycl::free(usm_functor_ptr,queue);
     sycl::free(usm_iter_ptr,queue);
 
 //    std::cout << "sycl_indirect_launch !!!" << std::endl;
