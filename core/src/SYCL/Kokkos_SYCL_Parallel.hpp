@@ -132,7 +132,7 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
 
     MDRangePolicy mdr = m_mdr_policy;
 
-    std::cout << "work_range： " << work_range << std::endl;
+    //std::cout << "work_range： " << work_range << std::endl;
 
     q.submit([=](sycl::handler& cgh) {
       sycl::range<1> range(work_range);
@@ -140,9 +140,9 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
       cgh.parallel_for(range, [=](cl::sycl::item<1> item) {
         const typename Policy::index_type id =
             static_cast<typename Policy::index_type>(item.get_linear_id()) + offset;
-         const iterate_type iter(mdr,functor);
-         //functor(id);
-         iter(id);
+         //const iterate_type iter(mdr,functor);
+         //iter(id);
+         functor(id);
 //         if(id==0){
 //             out << "sycl kernel run id: " << id << sycl::endl;
 //             out << (iter.m_func.a)(id,0) << " " << (iter.m_func.a)(id,1) << " " << (iter.m_func.a)(id,2) << sycl::endl;
@@ -155,29 +155,30 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
 
   //在usm中构造functor
   void sycl_indirect_launch() const {
+    std::cout << "sycl_indirect_launch !!!" << std::endl;
+    const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
+    //auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
+    auto usm_iter_ptr = sycl::malloc_shared(sizeof(iterate_type),queue);
+    //iterate_type functor(m_mdr_policy,m_functor);
+    //new (usm_functor_ptr) FunctorType(m_functor);
+    new (usm_iter_ptr) iterate_type(m_mdr_policy,m_functor);
+
+    sycl_direct_launch(m_policy, std::reference_wrapper(*(static_cast<iterate_type*>(usm_iter_ptr))));
+    //sycl::free(usm_functor_ptr,queue);
+    sycl::free(usm_iter_ptr,queue);
+
 //    std::cout << "sycl_indirect_launch !!!" << std::endl;
 //    const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
 //    auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
-//    auto usm_iter_ptr = sycl::malloc_shared(sizeof(iterate_type),queue);
-//    //iterate_type functor(m_mdr_policy,m_functor);
 //    new (usm_functor_ptr) FunctorType(m_functor);
-//    new (usm_iter_ptr) iterate_type(m_mdr_policy,*(static_cast<FunctorType*>(usm_functor_ptr)));
-//
-//    sycl_direct_launch(m_policy, std::reference_wrapper(*(static_cast<iterate_type*>(usm_iter_ptr))));
+//    sycl_direct_launch(m_policy,std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr))));
 //    sycl::free(usm_functor_ptr,queue);
-//    sycl::free(usm_iter_ptr,queue);
-
-    std::cout << "sycl_indirect_launch !!!" << std::endl;
-    const sycl::queue& queue = *(m_policy.space().impl_internal_space_instance()->m_queue);
-    auto usm_functor_ptr = sycl::malloc_shared(sizeof(FunctorType),queue);
-    new (usm_functor_ptr) FunctorType(m_functor);
-    sycl_direct_launch(m_policy,std::reference_wrapper(*(static_cast<FunctorType*>(usm_functor_ptr))));
-    sycl::free(usm_functor_ptr,queue);
   }
 
  public:
    void execute() const {
-    if constexpr (std::is_trivially_copyable_v<decltype(m_functor)>)
+    iterate_type functor(m_mdr_policy,m_functor)
+    if constexpr (std::is_trivially_copyable_v<decltype(functor)>)
       sycl_direct_launch(m_policy, m_functor);
     else
       sycl_indirect_launch();
