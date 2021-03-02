@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <Kokkos_Parallel.hpp>
 #include <impl/Kokkos_FunctorAdapter.hpp>
-#include <impl/Kokkos_HostThreadTeam.hpp>
 #include <KokkosExp_MDRangePolicy.hpp>
 #include <Kokkos_Parallel_Reduce.hpp>
 #include <SYCL/Kokkos_SYCL_IterateTile.hpp>
@@ -24,6 +23,7 @@ namespace Impl{
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
+/* ParallelFor Kokkos::SYCL with RangePolicy */
 template <class FunctorType, class... Traits>
 class ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>, Kokkos::SYCL> {
  public:
@@ -93,7 +93,7 @@ class ParallelFor<FunctorType, Kokkos::RangePolicy<Traits...>, Kokkos::SYCL> {
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// MDRangePolicy impl
+/* ParallelFor Kokkos::SYCL with MDRangePolicy */
 template <class FunctorType, class... Traits>
 class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
  private:
@@ -189,6 +189,97 @@ class ParallelFor<FunctorType, Kokkos::MDRangePolicy<Traits...>, Kokkos::SYCL> {
 };
 //----------------------------------------------------------------------------
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+/* ParallelReduce with Kokkos::SYCL and RangePolicy */
+template <class FunctorType, class ReducerType, class... Traits>
+class ParallelReduce<FunctorType, Kokkos::RangePolicy<Traits...>, ReducerType,
+                     Kokkos::SYCL> {
+ private:
+  typedef Kokkos::RangePolicy<Traits...> Policy;
+
+  typedef typename Policy::work_tag WorkTag;
+  typedef typename Policy::WorkRange WorkRange;
+  typedef typename Policy::member_type Member;
+
+  typedef Kokkos::Impl::if_c<std::is_same<InvalidType, ReducerType>::value,
+                             FunctorType, ReducerType>
+      ReducerConditional;
+  typedef typename ReducerConditional::type ReducerTypeFwd;
+  typedef
+      typename Kokkos::Impl::if_c<std::is_same<InvalidType, ReducerType>::value,
+                                  WorkTag, void>::type WorkTagFwd;
+
+  typedef Kokkos::Impl::FunctorValueTraits<ReducerTypeFwd, WorkTagFwd>
+      ValueTraits;
+  typedef Kokkos::Impl::FunctorValueInit<ReducerTypeFwd, WorkTagFwd> ValueInit;
+
+  typedef typename ValueTraits::pointer_type pointer_type;
+  typedef typename ValueTraits::reference_type reference_type;
+
+  const FunctorType m_functor;
+  const Policy m_policy;
+  const ReducerType m_reducer;
+  const pointer_type m_result_ptr;
+
+  template <typename T>
+  struct ExtendedReferenceWrapper : std::reference_wrapper<T> {
+    using std::reference_wrapper<T>::reference_wrapper;
+
+    using value_type = typename FunctorValueTraits<T, WorkTag>::value_type;
+
+    template <typename Dummy = T>
+    std::enable_if_t<std::is_same_v<Dummy, T> &&
+                     ReduceFunctorHasInit<Dummy>::value>
+    init(value_type& old_value, const value_type& new_value) const {
+      return this->get().init(old_value, new_value);
+    }
+
+    template <typename Dummy = T>
+    std::enable_if_t<std::is_same_v<Dummy, T> &&
+                     ReduceFunctorHasJoin<Dummy>::value>
+    join(value_type& old_value, const value_type& new_value) const {
+      return this->get().join(old_value, new_value);
+    }
+
+    template <typename Dummy = T>
+    std::enable_if_t<std::is_same_v<Dummy, T> &&
+                     ReduceFunctorHasFinal<Dummy>::value>
+    final(value_type& old_value) const {
+      return this->get().final(old_value);
+    }
+  };
+
+ public:
+  inline void execute() const {
+
+  }
+
+  template <class ViewType>
+  ParallelReduce(
+      const FunctorType &arg_functor, const Policy &arg_policy,
+      const ViewType &arg_result_view,
+      typename std::enable_if<Kokkos::is_view<ViewType>::value &&
+                                  !Kokkos::is_reducer_type<ReducerType>::value,
+                              void *>::type = nullptr)
+      : m_functor(arg_functor),
+        m_policy(arg_policy),
+        m_reducer(InvalidType()),
+        m_result_ptr(arg_result_view.data()) {}
+
+  inline ParallelReduce(const FunctorType &arg_functor, Policy arg_policy,
+                        const ReducerType &reducer)
+      : m_functor(arg_functor),
+        m_policy(arg_policy),
+        m_reducer(reducer),
+        m_result_ptr(reducer.view().data()) {
+    /*static_assert( std::is_same< typename ViewType::memory_space
+                                    , Kokkos::HostSpace >::value
+      , "Reduction result on Kokkos::OpenMP must be a Kokkos::View in HostSpace"
+      );*/
+  }
+};
 
 } // namespace Kokkos
 } // namespace Impl
