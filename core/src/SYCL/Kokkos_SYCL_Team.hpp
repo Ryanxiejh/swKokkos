@@ -5,6 +5,8 @@
 #ifndef MY_KOKKOS_KOKKOS_SYCL_TEAM_HPP
 #define MY_KOKKOS_KOKKOS_SYCL_TEAM_HPP
 
+#include <Kokkos_ExecPolicy.hpp>
+
 namespace Kokkos{
 namespace Impl{
 
