@@ -92,7 +92,7 @@ struct DeviceTypeTraits<SYCL> {
 } //namespace Kokkos
 
 #include <SYCL/Kokkos_SYCL_Instance.hpp>
-#include <SYCL/kokkos_SYCL_Atomic.hpp>
+#include <SYCL/Kokkos_SYCL_Atomic.hpp>
 #include <SYCL/Kokkos_SYCL_Team.hpp>
 #include <SYCL/Kokkos_SYCL_Parallel.hpp>
 #endif //#if defined(KOKKOS_ENABLE_SYCL)
