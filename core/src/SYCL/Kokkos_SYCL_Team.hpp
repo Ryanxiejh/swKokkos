@@ -6,6 +6,7 @@
 #define MY_KOKKOS_KOKKOS_SYCL_TEAM_HPP
 
 #include <Kokkos_ExecPolicy.hpp>
+#include <Impl/Kokkos_FunctorAnalysis.hpp>
 
 namespace Kokkos{
 namespace Impl{

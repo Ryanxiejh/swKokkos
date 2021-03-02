@@ -1147,7 +1147,7 @@ public:
         q.wait();
 
         const int size = ValueTraits::value_size(m_functor);
-        DeepCopy<HostSpace, Kokkos::SYCLSpace, Kokkos::SYCL>(
+        DeepCopy<HostSpace, Kokkos::SyclSpace, Kokkos::SYCL>(
                 &m_returnvalue, &first_round_result[len-1], size);
 
         sycl::free(first_round_result, q);
@@ -1422,7 +1422,7 @@ private:
 //      const long long nwork = Base::m_policy.end() - Base::m_policy.begin();
 //      if (nwork > 0) {
 //        const int size = Base::ValueTraits::value_size(Base::m_functor);
-//        DeepCopy<HostSpace, Kokkos::SYCLSpace>(
+//        DeepCopy<HostSpace, Kokkos::SyclSpace>(
 //            &m_returnvalue, Base::m_scratch_space + nwork - 1, size);
 //      }
 //    });
